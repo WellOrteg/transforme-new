@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Leads — transforme.tech</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f5f3fa;color:#252238;font:16px system-ui,sans-serif}main{max-width:1400px;margin:auto;padding:32px 20px}h1{margin-bottom:8px}p{line-height:1.5}form,.filtros,.acoes{display:flex;gap:16px;align-items:end;flex-wrap:wrap}label{display:grid;gap:8px}input,select,button{font:inherit;padding:12px;border:1px solid #777;border-radius:8px}button{background:#6240bc;color:white;border:0;cursor:pointer}button:disabled{opacity:.5;cursor:default}section{background:white;border-radius:16px;padding:24px;margin-top:24px}.tabela{overflow:auto;margin:24px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:12px;border-bottom:1px solid #ddd;vertical-align:top}th{white-space:nowrap}td{min-width:120px;overflow-wrap:anywhere}#erro{color:#a32222}#resumo{display:flex;gap:12px;flex-wrap:wrap}#resumo span{background:#eee9fb;padding:10px;border-radius:8px}[hidden]{display:none!important}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #9675eb;outline-offset:3px}
+  </style>
+</head>
+<body><main>
+  <h1>Leads</h1>
+  <p>Consulte os cadastros recebidos pelo site e a origem dos pedidos de e-book.</p>
+  <section id="login">
+    <form id="entrar">
+      <label>Senha do painel<input id="senha" type="password" required autocomplete="current-password"></label>
+      <button>Entrar</button>
+    </form>
+  </section>
+  <p id="erro" role="alert"></p>
+  <div id="painel" hidden>
+    <section><h2>Cadastros do e-book por parceiro</h2><div id="resumo"></div><p>Contagem de formulários registrados, incluindo tentativas cujo e-mail pode não ter sido entregue. A tag indica a origem informada no link.</p></section>
+    <section>
+      <form id="filtros" class="filtros">
+        <label>Origem<select id="origem"><option value="">Todas</option><option value="ebook" selected>E-book</option><option value="contato">Contato (home)</option><option value="eventos">Landing de eventos</option><option value="newsletter">Newsletter</option></select></label>
+        <label>Parceiro<select id="parceiro"><option value="">Todos</option><option value="__sem__">Sem parceiro</option></select></label>
+        <button>Filtrar</button><button id="exportar" type="button">Exportar CSV</button><button id="sair" type="button">Sair</button>
+      </form>
+      <p id="total" role="status" aria-live="polite"></p>
+      <div class="tabela"><table><caption>Cadastros (datas no horário de Brasília)</caption><thead><tr><th>Data</th><th>Nome</th><th>E-mail</th><th>Organização</th><th>WhatsApp</th><th>Desafio</th><th>Origem</th><th>Parceiro</th></tr></thead><tbody id="linhas"></tbody></table></div>
+      <div class="acoes"><button id="anterior">Anterior</button><span id="pagina"></span><button id="proxima">Próxima</button></div>
+    </section>
+  </div>
+  <script type="module">
+    const el = id => document.getElementById(id);
+    let token = '', pagina = 1, total = 0, filtro = { origem: 'ebook', parceiro: '' };
+    const campos = ['criado_em','nome','email','organizacao','whatsapp','desafio','origem','parceiro'];
+    const dataLocal = valor => new Date(valor.replace(' ', 'T') + 'Z').toLocaleString('pt-BR', {timeZone:'America/Sao_Paulo'});
+    function sair() { token='';el('senha').value='';el('linhas').replaceChildren();el('resumo').replaceChildren();el('painel').hidden=true;el('login').hidden=false; }
+    async function consultar(p) {
+      const r = await fetch('/api/admin/leads?' + new URLSearchParams({...filtro,pagina:String(p)}), {headers:{Authorization:'Bearer '+token},cache:'no-store'});
+      const dados = await r.json();
+      if (!r.ok) { if(r.status===401) sair(); throw new Error(dados.erro || 'Não foi possível consultar os leads.'); }
+      return dados;
+    }
+    async function carregar() {
+      el('erro').textContent='';
+      try {
+        const d = await consultar(pagina);total=d.total;
+        el('login').hidden=true;el('painel').hidden=false;
+        el('total').textContent=total+' cadastro(s) encontrado(s)';
+        el('pagina').textContent='Página '+pagina+' de '+Math.max(1,Math.ceil(total/100));
+        el('anterior').disabled=pagina<=1;el('proxima').disabled=pagina*100>=total;
+        el('linhas').replaceChildren(...d.leads.map(lead=>{const tr=document.createElement('tr');for(const campo of campos){const td=document.createElement('td');td.textContent=campo==='criado_em'?dataLocal(lead[campo]):lead[campo]||(campo==='parceiro'?'Sem parceiro':'—');tr.append(td)}return tr}));
+        el('resumo').replaceChildren(...d.parceiros.map(p=>{const span=document.createElement('span');span.textContent=(p.parceiro||'Sem parceiro')+': '+p.total;return span}));
+        el('parceiro').replaceChildren(new Option('Todos',''),new Option('Sem parceiro','__sem__'),...d.parceiros.filter(p=>p.parceiro).map(p=>new Option(p.parceiro,p.parceiro)));
+        el('parceiro').value=filtro.parceiro;
+      } catch(e) { el('erro').textContent=e.message; }
+    }
+    el('entrar').addEventListener('submit',async e=>{e.preventDefault();token=el('senha').value;el('senha').value='';pagina=1;await carregar()});
+    el('filtros').addEventListener('submit',async e=>{e.preventDefault();filtro={origem:el('origem').value,parceiro:el('parceiro').value};pagina=1;await carregar()});
+    el('anterior').onclick=()=>{pagina--;carregar()};el('proxima').onclick=()=>{pagina++;carregar()};el('sair').onclick=sair;
+    el('exportar').onclick=async()=>{
+      el('exportar').disabled=true;el('erro').textContent='';
+      try {
+        const registros=[];let p=1,d;
+        do { d=await consultar(p++);registros.push(...d.leads); } while(registros.length<d.total&&d.leads.length);
+        const celula=v=>{let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"'};
+        const csv=[campos.join(';'),...registros.map(l=>campos.map(c=>celula(c==='criado_em'?dataLocal(l[c]):l[c])).join(';'))].join('\r\n');
+        const url=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='leads.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+      } catch(e) {el('erro').textContent=e.message} finally {el('exportar').disabled=false}
+    };
+  </script>
+</main></body></html>

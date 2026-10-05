@@ -11,7 +11,14 @@
 // Tudo em atributo `style`: cliente de e-mail não carrega folha externa e boa
 // parte deles ignora <style> no <head>.
 
+import { ORIGENS, type Origem } from '../../src/dados/origens';
+
 export const ASSUNTO_CONTATO = 'Nova mensagem do formulário do site da transforme.tech';
+
+// A origem vai no assunto para o comercial separar as landing pages já na caixa de entrada.
+export function assuntoContato(origem: Origem = 'contato'): string {
+  return origem === 'contato' ? ASSUNTO_CONTATO : `${ASSUNTO_CONTATO} — ${ORIGENS[origem]}`;
+}
 export const ASSUNTO_NEWSLETTER = 'Nova inscrição na newsletter do site da transforme.tech';
 
 export interface DadosContato {
@@ -42,7 +49,7 @@ const RODAPE = `  <tr>
   </tr>
 </table>`;
 
-export function montarEmailContato(d: DadosContato): string {
+export function montarEmailContato(d: DadosContato, origem: Origem = 'contato'): string {
   const desafio = d.desafio?.trim();
 
   const secaoDesafio = desafio
@@ -63,6 +70,7 @@ export function montarEmailContato(d: DadosContato): string {
       <p><strong>E-mail:</strong> ${escapar(d.email)}</p>
       <p><strong>Telefone:</strong> ${escapar(d.whatsapp)}</p>
       <p><strong>Organização:</strong> ${escapar(d.organizacao)}</p>
+      <p><strong>Formulário:</strong> ${escapar(ORIGENS[origem])}</p>
     </td>
   </tr>
 ${secaoDesafio}${RODAPE}`;

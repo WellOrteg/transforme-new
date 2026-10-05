@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import capa from '../../assets/site/video-apresentacao-capa.jpg';
+import type { ImageMetadata } from 'astro';
+import capaPadrao from '../../assets/site/video-apresentacao-capa.jpg';
 
 // O mesmo vídeo que abre o "O que fazemos?" do site atual.
 //
@@ -9,8 +10,14 @@ import capa from '../../assets/site/video-apresentacao-capa.jpg';
 // fica a capa (auto-hospedada, para nem o ytimg.com ser chamado) dentro de um
 // link para o vídeo. Quem tem JavaScript vê o player nascer no lugar do link,
 // na versão sem cookies; quem não tem, vai para o YouTube pelo link.
-const ID = 'cDZmDhgqD2E';
-const TITULO = 'Por que ser parceiro da transforme.tech? Conheça nossas soluções!';
+//
+// Sem props, mostra o vídeo da home; a página do e-book passa outro vídeo.
+interface Props { id?: string; titulo?: string; capa?: ImageMetadata }
+const {
+  id: ID = 'cDZmDhgqD2E',
+  titulo: TITULO = 'Por que ser parceiro da transforme.tech? Conheça nossas soluções!',
+  capa = capaPadrao,
+} = Astro.props;
 ---
 
 <figure class="m-0">

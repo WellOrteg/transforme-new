@@ -1,3 +1,5 @@
 RESEND_API_KEY=re_xxx
 TURNSTILE_SECRET_KEY=0x4xxx
 MAIL_TO=contato@transforme.tech
+# Senha do painel /admin/leads/ (mínimo 32 caracteres aleatórios; use outra em produção)
+ADMIN_LEADS_TOKEN=troque-por-32-ou-mais-caracteres-aleatorios

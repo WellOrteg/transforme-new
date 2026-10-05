@@ -39,7 +39,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     );
   }
 
-  await salvarLead(env.DB, 'newsletter', r.data);
+  await salvarLead(env.DB, 'newsletter', r.data, 'newsletter');
 
   // Mesmo raciocínio de contato.ts: o lead já foi gravado, a falha fica no log.
   try {

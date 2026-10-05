@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "og": "tsx scripts/gerar-og.ts",
-    "cf:dev": "wrangler pages dev dist --d1 DB=transforme-leads",
+    "cf:dev": "wrangler pages dev dist",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "verificar": "npm run test && npm run build && npm run test:e2e"

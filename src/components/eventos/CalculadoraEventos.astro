@@ -1,0 +1,77 @@
+---
+// "Confira sua economia": a calculadora da landing page antiga de eventos
+// (pasta calculadora/). A conta mora em src/lib/calculadora-eventos.ts; aqui
+// fica só a tela. Sem JavaScript não há conta, e o aviso no <noscript> diz isso.
+---
+
+<div class="rounded-2xl border border-[var(--borda)] bg-white/5 p-6 md:p-8">
+  <form data-calculadora class="grid gap-5 sm:grid-cols-2 sm:items-end">
+    <div>
+      <label for="calc-inscricoes" class="mb-1 block text-sm">Média de inscrições recebidas por ano</label>
+      <input id="calc-inscricoes" name="inscricoes" type="number" inputmode="numeric" min="1" step="1" required
+        class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+    </div>
+    <div>
+      <label for="calc-ticket" class="mb-1 block text-sm">Valor médio da inscrição (R$)</label>
+      <input id="calc-ticket" name="ticket" type="number" inputmode="decimal" min="1" step="0.01" required
+        class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+    </div>
+    <button type="submit" data-acao
+      class="justify-self-start rounded-full px-6 py-3 text-sm font-semibold text-[var(--acento-texto)] sm:col-span-2"
+      style="background: var(--acento-superficie)">
+      Calcular economia
+    </button>
+  </form>
+
+  <noscript><p class="mt-4 text-sm text-[var(--texto-suave)]">Ative o JavaScript para usar a calculadora, ou fale com a gente pelo formulário acima.</p></noscript>
+
+  <div data-resultado aria-live="polite" class="mt-8 empty:hidden"></div>
+</div>
+
+<template data-modelo-resultado>
+  <p class="text-sm text-[var(--texto-suave)]">Receita anual estimada (inscrições × valor médio): <strong data-campo="receitaAnual" class="text-[var(--texto-forte)]"></strong></p>
+  <dl class="mt-6 grid gap-4 sm:grid-cols-3">
+    <div class="rounded-xl border border-[var(--borda)] p-4" style="background: var(--acento-superficie)">
+      <dt class="text-sm text-white/85">Custo com a transforme.tech</dt>
+      <dd data-campo="transforme" class="mt-1 text-2xl font-semibold text-white"></dd>
+    </div>
+    <div class="rounded-xl border border-[var(--borda)] p-4">
+      <dt class="text-sm text-[var(--texto-suave)]">Concorrente mais conhecido</dt>
+      <dd data-campo="maisConhecido" class="mt-1 text-2xl font-semibold"></dd>
+      <dd class="mt-2 text-sm text-[var(--acento)]">Você economiza <strong data-campo="economiaMaisConhecido"></strong></dd>
+    </div>
+    <div class="rounded-xl border border-[var(--borda)] p-4">
+      <dt class="text-sm text-[var(--texto-suave)]">Concorrente mais barato</dt>
+      <dd data-campo="maisBarato" class="mt-1 text-2xl font-semibold"></dd>
+      <dd class="mt-2 text-sm text-[var(--acento)]">Você economiza <strong data-campo="economiaMaisBarato"></strong></dd>
+    </div>
+  </dl>
+  <p class="mt-4 text-xs text-[var(--texto-suave)]">Estimativa anual com base nas taxas médias de Pix, boleto e cartão. Valores reais dependem do contrato.</p>
+</template>
+
+<template data-modelo-sem-economia>
+  <p class="text-[var(--texto-forte)]">Com esse volume, a economia ainda não aparece na conta. Fale com a gente pelo formulário: avaliamos o seu caso e as condições para eventos menores.</p>
+</template>
+
+<script>
+  import { calcularEconomia, formatarReais, type ResultadoEconomia } from '../../lib/calculadora-eventos';
+
+  const form = document.querySelector<HTMLFormElement>('[data-calculadora]');
+  const saida = document.querySelector<HTMLElement>('[data-resultado]');
+
+  form?.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    if (!saida) return;
+    const dados = new FormData(form);
+    const r = calcularEconomia(Number(dados.get('inscricoes')), Number(dados.get('ticket')));
+    const modelo = document.querySelector<HTMLTemplateElement>(
+      r.compensa ? '[data-modelo-resultado]' : '[data-modelo-sem-economia]',
+    );
+    if (!modelo) return;
+    const conteudo = modelo.content.cloneNode(true) as DocumentFragment;
+    for (const campo of conteudo.querySelectorAll<HTMLElement>('[data-campo]')) {
+      campo.textContent = formatarReais(r[campo.dataset.campo as keyof ResultadoEconomia] as number);
+    }
+    saida.replaceChildren(conteudo);
+  });
+</script>

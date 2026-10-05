@@ -2,7 +2,8 @@ import { esquemaContato } from '../../src/lib/validacao';
 import { verificarTurnstile } from '../_shared/turnstile';
 import { salvarLead } from '../_shared/persistencia';
 import { destinatarios, enviarEmail } from '../_shared/email';
-import { ASSUNTO_CONTATO, montarEmailContato } from '../_shared/modelo-email';
+import { assuntoContato, montarEmailContato } from '../_shared/modelo-email';
+import { origemDoContato } from '../../src/dados/origens';
 
 interface Env {
   DB: D1Database;
@@ -45,7 +46,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     );
   }
 
-  await salvarLead(env.DB, 'contato', r.data);
+  // Campo escondido do formulário: diz se o lead veio da home ou de uma landing page.
+  const origem = origemDoContato(form.get('origem'));
+  await salvarLead(env.DB, 'contato', r.data, origem);
 
   // O lead já está no D1. Se a Resend falhar, o visitante não tem o que fazer
   // com o erro; ele fica no log (wrangler pages deployment tail) e o lead não se perde.
@@ -53,8 +56,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     await enviarEmail(
       env.RESEND_API_KEY,
       destinatarios(env.MAIL_TO),
-      ASSUNTO_CONTATO,
-      montarEmailContato(r.data),
+      assuntoContato(origem),
+      montarEmailContato(r.data, origem),
     );
   } catch (e) {
     console.error('Aviso de contato não enviado:', e);

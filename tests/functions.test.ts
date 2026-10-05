@@ -26,18 +26,18 @@ describe('salvarLead', () => {
     const bind = vi.fn().mockReturnValue({ run: vi.fn() });
     const db = { prepare: vi.fn().mockReturnValue({ bind }) } as unknown as D1Database;
 
-    await salvarLead(db, 'newsletter', { email: 'a@b.com' });
+    await salvarLead(db, 'newsletter', { email: 'a@b.com' }, 'newsletter');
 
-    expect(bind).toHaveBeenCalledWith('newsletter', null, 'a@b.com', null, null, null, null);
+    expect(bind).toHaveBeenCalledWith('newsletter', null, 'a@b.com', null, null, null, null, 'newsletter');
   });
 
   it('grava desafio em branco como NULL, não como string vazia', async () => {
     const bind = vi.fn().mockReturnValue({ run: vi.fn() });
     const db = { prepare: vi.fn().mockReturnValue({ bind }) } as unknown as D1Database;
 
-    await salvarLead(db, 'contato', { email: 'a@b.com', desafio: '' });
+    await salvarLead(db, 'contato', { email: 'a@b.com', desafio: '' }, 'contato');
 
-    expect(bind).toHaveBeenCalledWith('contato', null, 'a@b.com', null, null, null, null);
+    expect(bind).toHaveBeenCalledWith('contato', null, 'a@b.com', null, null, null, null, 'contato');
   });
 
   it('grava o lead qualificado inteiro', async () => {
@@ -50,7 +50,7 @@ describe('salvarLead', () => {
       organizacao: 'ONG Exemplo',
       whatsapp: '(44) 99999-0000',
       desafio: 'Captação de recursos',
-    });
+    }, 'eventos');
 
     expect(bind).toHaveBeenCalledWith(
       'contato',
@@ -60,6 +60,7 @@ describe('salvarLead', () => {
       '(44) 99999-0000',
       'Captação de recursos',
       null,
+      'eventos',
     );
   });
 });

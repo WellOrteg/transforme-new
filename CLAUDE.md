@@ -33,6 +33,8 @@ CLOUDFLARE_ACCOUNT_ID=29642ffb6075399995cad1026e831083 npx wrangler pages deploy
 CLOUDFLARE_ACCOUNT_ID=29642ffb6075399995cad1026e831083 npx wrangler d1 migrations apply transforme-leads --remote   # só quando houver migration nova
 ```
 
+Aplique as migrations **antes** do `pages deploy`: contato, newsletter e e-book gravam a coluna `origem` (migration 0003), e sem ela todo envio de formulário falha.
+
 Segredos de produção (`RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) já estão no projeto Pages. A chave pública do Turnstile entra no HTML no build e vem de `.env.production` (versionado); sem ela o widget some e a API recusa todo envio. Falhas da Resend não derrubam o formulário (o lead já está no D1): elas aparecem em `npx wrangler pages deployment tail --project-name transforme-tech`.
 
 O `playwright.config.ts` define `ASTRO_PREVIEW_BACKGROUND=1` porque o Astro 7 detecta execução por agente de IA e manda o `astro preview` para background, o que quebra o `webServer` do Playwright. Não remova.
@@ -44,6 +46,8 @@ Testes Vitest que só leem arquivos (ex.: `tests/redirects.test.ts`) ficam em `t
 **Site estático Astro 7 + Tailwind 4, hospedado no Cloudflare Pages.** `output: 'static'`; o único código de servidor são as Pages Functions em `functions/`.
 
 - **Formulários (contato e newsletter):** `functions/api/*.ts` → valida com os schemas Zod de `src/lib/validacao.ts` (compartilhados com o front) → confere Turnstile (`functions/_shared/turnstile.ts`) → grava no D1 (`binding DB`, tabela `leads`, `functions/_shared/persistencia.ts`) → envia e-mail via Resend (`_shared/email.ts` + `_shared/modelo-email.ts`). Destinatários comerciais ficam fixos no código; `MAIL_TO` (lista separada por vírgula) só sobrescreve. Os formulários funcionam sem JavaScript (POST nativo) e são aprimorados por `fetch` quando há JS.
+- **E-book e painel de leads:** `/ebook/` e `/ebook_doacoes_online/` (link antigo do WordPress) usam `<FormContato ebook />` → `functions/api/ebook.ts`, que grava o lead com `origem = 'ebook'` e a tag de `?parceiro=` e manda ao visitante o link do PDF (`public/ebooks/`). O painel `/admin/leads/` lê `functions/api/admin/leads.ts` e exige o segredo `ADMIN_LEADS_TOKEN` (≥ 32 caracteres). Detalhes em `docs/painel-leads.md`.
+- **Origem de cada formulário:** todo lead grava a coluna `origem` (`contato`, `eventos`, `ebook`, `newsletter`), definida **uma única vez** em `src/dados/origens.ts`. Formulário de contato em página nova = `<FormContato origem="..." />` + entrada nova em `ORIGENS`/`ORIGENS_CONTATO` + `<option>` no filtro de `public/admin/leads/index.html` (`tests/origens.test.ts` falha se faltar). A origem aparece no painel e no assunto do e-mail do comercial. Landing pages: `/ebook_doacoes_online/` e `/mais_eventos/` (calculadora em `src/lib/calculadora-eventos.ts`).
 - **Migrations D1** em `migrations/` são incrementais e numeradas. A coluna `mensagem` é legado de leads antigos e não deve ser removida.
 - **Blog:** coleção `blog` em `src/content.config.ts` (Markdown em `src/content/blog/`, imagens em `src/assets/blog/` referenciadas como `~/assets/blog/...` — alias `~` → `src/`). Os 14 posts vieram do WordPress (`scripts/migrar-wordpress.ts`) e `public/_redirects` mantém os 301 dos slugs antigos.
 - **CMS:** Sveltia CMS em `public/admin/` (login via GitHub). As `options` de autor/categoria em `public/admin/config.yml` **precisam bater** com os `enum` `AUTORES`/`CATEGORIAS` de `src/content.config.ts` — `tests/e2e/admin.spec.ts` falha se só um lado mudar. O guia do cliente para publicar está em `docs-cliente/`.

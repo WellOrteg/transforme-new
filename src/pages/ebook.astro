@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import FormContato from '../components/form/FormContato.astro';
+import VideoApresentacao from '../components/home/VideoApresentacao.astro';
+import IconeTraco from '../components/landing/IconeTraco.astro';
+import { TOPICOS_EBOOK, VIDEO_EBOOK } from '../dados/ebook';
+import capaEbook from '../assets/ebook/capa-guia-doacoes-online.png';
+import capaVideo from '../assets/ebook/video-conheca-capa.jpg';
+
+// A capa e a miniatura do vídeo vieram da landing page antiga, no WordPress.
+---
+
+<Base
+  titulo="Guia definitivo para doações online — transforme.tech"
+  descricao="E-book gratuito da transforme.tech: aprenda a criar um ciclo completo de doações, fidelizar doadores e aumentar a recorrência na sua organização."
+>
+  <section class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+    <div class="mx-auto grid max-w-6xl items-start gap-10 px-6 py-12 md:grid-cols-[1fr_minmax(0,28rem)] md:gap-14 md:py-24">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-[var(--acento)]">E-book gratuito</p>
+        <h1 class="mt-3 max-w-xl text-[clamp(2rem,3.6vw,3.25rem)]">Alavanque as doações online na sua organização</h1>
+        <p class="mt-5 max-w-xl text-lg text-[var(--texto-suave)]">
+          Aprenda a criar um <strong class="text-[var(--texto-forte)]">ciclo completo de doações</strong>,
+          fidelizar doadores e <strong class="text-[var(--texto-forte)]">aumentar a recorrência</strong>{' '}
+          na sua organização com este guia gratuito da transforme.tech.
+        </p>
+
+        <Image
+          src={capaEbook}
+          alt="Capa do e-book Guia definitivo para doações online, da transforme.tech"
+          width={360}
+          height={509}
+          widths={[280, 360, 720]}
+          sizes="(min-width: 768px) 360px, 70vw"
+          loading="eager"
+          class="mt-10 w-[70%] max-w-[360px] -rotate-2 rounded-lg shadow-2xl shadow-[var(--color-marca)]/30"
+        />
+      </div>
+
+      <div class="rounded-2xl border border-[var(--borda)] bg-white p-6 shadow-xl shadow-[var(--color-marca)]/10 md:p-8">
+        <h2 class="text-2xl">Baixe agora o e-book</h2>
+        <p class="mb-6 mt-2 text-[var(--texto-suave)]">
+          Preencha o formulário e receba no seu e-mail o link para baixar o e-book gratuitamente.
+        </p>
+        <FormContato ebook />
+        <p class="mt-4 text-xs text-[var(--texto-suave)]">
+          As informações são captadas, armazenadas e tratadas de acordo com a LGPD.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section data-tema="escuro" class="bg-[var(--superficie)] text-[var(--texto-forte)]">
+    <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+      <h2 class="max-w-2xl text-[clamp(1.75rem,3vw,2.5rem)]">Aprenda a criar um ciclo completo de doações</h2>
+      <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {TOPICOS_EBOOK.map((t) => (
+          <li class="flex gap-4">
+            <IconeTraco nome={t.icone} />
+            <div>
+              <h3 class="text-lg">{t.titulo}</h3>
+              <p class="mt-1 text-[var(--texto-suave)]">{t.texto}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-[var(--superficie)]">
+    <div class="mx-auto max-w-3xl px-6 py-12 md:py-24">
+      <h2 class="mb-8 text-center text-[clamp(1.75rem,3vw,2.5rem)]">Conheça a transforme.tech</h2>
+      <VideoApresentacao id={VIDEO_EBOOK.id} titulo={VIDEO_EBOOK.titulo} capa={capaVideo} />
+    </div>
+  </section>
+</Base>

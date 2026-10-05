@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import FormContato from '../components/form/FormContato.astro';
+import CalculadoraEventos from '../components/eventos/CalculadoraEventos.astro';
+import IconeTraco from '../components/landing/IconeTraco.astro';
+import { FAQ_EVENTOS, RECURSOS_EVENTOS } from '../dados/eventos';
+import foto from '../assets/eventos/foto-evento-notebook.jpg';
+
+// Landing page de eventos, no mesmo endereço da antiga do WordPress. O
+// formulário grava os leads com origem "eventos" (src/dados/origens.ts), para
+// o comercial separá-los dos contatos da home.
+---
+
+<Base
+  titulo="Receba inscrições para seus eventos — transforme.tech"
+  descricao="Crie hotsites ilimitados para divulgar e receber inscrições dos seus eventos e cursos, com a menor taxa do mercado. Calcule quanto sua organização economiza."
+>
+  <section class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+    <div class="mx-auto grid max-w-6xl items-start gap-10 px-6 py-12 md:grid-cols-[1fr_minmax(0,28rem)] md:gap-14 md:py-24">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-[var(--acento)]">Eventos e cursos</p>
+        <h1 class="mt-3 max-w-xl text-[clamp(2rem,3.6vw,3.25rem)]">Receba as inscrições do seu evento com a menor taxa do mercado</h1>
+        <p class="mt-5 max-w-xl text-lg text-[var(--texto-suave)]">
+          Na plataforma transforme.tech você cria <strong class="text-[var(--texto-forte)]">hotsites ilimitados</strong>{' '}
+          para divulgar e receber inscrições dos seus eventos e cursos.
+        </p>
+        <p class="mt-4 max-w-xl text-lg text-[var(--texto-suave)]">
+          A taxa por operação é muito atrativa e garante o melhor custo-benefício para eventos com inscrição acima de{' '}
+          <strong class="text-[var(--texto-forte)]">R$ 200</strong>.
+        </p>
+
+        <Image
+          src={foto}
+          alt="Homem sorridente sentado diante de um notebook, com um livro aberto sobre a mesa"
+          width={560}
+          height={373}
+          widths={[400, 560, 1120]}
+          sizes="(min-width: 768px) 560px, 100vw"
+          loading="eager"
+          class="mt-10 w-full max-w-[560px] rounded-2xl object-cover shadow-2xl shadow-[var(--color-marca)]/20"
+        />
+      </div>
+
+      <div class="rounded-2xl border border-[var(--borda)] bg-white p-6 shadow-xl shadow-[var(--color-marca)]/10 md:p-8">
+        <h2 class="text-2xl">Bora alavancar seus eventos, juntos?</h2>
+        <p class="mb-6 mt-2 text-[var(--texto-suave)]">Cadastre-se e um especialista entra em contato.</p>
+        <FormContato origem="eventos" />
+      </div>
+    </div>
+  </section>
+
+  <section data-tema="escuro" class="bg-[var(--superficie)] text-[var(--texto-forte)]">
+    <div class="mx-auto max-w-4xl px-6 py-12 md:py-24">
+      <h2 class="text-[clamp(1.75rem,3vw,2.5rem)]">Confira sua economia</h2>
+      <p class="mb-8 mt-3 max-w-2xl text-[var(--texto-suave)]">
+        Informe quantas inscrições sua organização recebe por ano e o valor médio de cada uma. A conta compara o custo
+        com a transforme.tech e com as plataformas concorrentes.
+      </p>
+      <CalculadoraEventos />
+    </div>
+  </section>
+
+  <section class="bg-[var(--superficie)]">
+    <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+      <h2 class="max-w-2xl text-[clamp(1.75rem,3vw,2.5rem)]">Faça a gestão completa do seu evento</h2>
+      <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {RECURSOS_EVENTOS.map((r) => (
+          <li class="flex gap-4">
+            <IconeTraco nome={r.icone} />
+            <div>
+              <h3 class="text-lg">{r.titulo}</h3>
+              <p class="mt-1 text-[var(--texto-suave)]">{r.texto}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+    <div class="mx-auto max-w-3xl px-6 py-12 md:py-24">
+      <h2 class="text-center text-[clamp(1.75rem,3vw,2.5rem)]">Perguntas frequentes</h2>
+      <div class="mt-8 divide-y divide-[var(--borda)] border-y border-[var(--borda)]">
+        {FAQ_EVENTOS.map((f) => (
+          <details class="group py-5" open>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold">
+              {f.pergunta}
+              <span aria-hidden="true" class="text-[var(--acento)] transition group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-[var(--texto-suave)]">{f.resposta}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
