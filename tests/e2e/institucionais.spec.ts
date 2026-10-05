@@ -29,11 +29,23 @@ test('nenhuma institucional aparece no menu principal', async ({ page }) => {
   }
 });
 
-test('suporte traz os três canais, com o WhatsApp de suporte', async ({ page }) => {
+test('suporte traz os quatro canais, com o WhatsApp de suporte', async ({ page }) => {
   await page.goto('/suporte/');
   await expect(page.locator('main a[href*="554491510045"]')).toHaveCount(1);
   await expect(page.locator('main a[href*="youtube.com"]')).toHaveCount(1);
   await expect(page.locator('a[href*="atendimento.transforme.solutions"]')).toHaveCount(1);
+});
+
+test('Teco IA abre o chat num modal e só carrega o widget ao abrir', async ({ page }) => {
+  await page.goto('/suporte/');
+  const iframe = page.locator('[data-teco-iframe]');
+  await expect(iframe).not.toHaveAttribute('src', /.+/);
+  await page.getByRole('link', { name: /Abrir chat/ }).click();
+  const dialogo = page.getByRole('dialog', { name: 'Chat com o Teco IA' });
+  await expect(dialogo).toBeVisible();
+  await expect(iframe).toHaveAttribute('src', /gptmaker\.ai\/widget\/3FA2E5400B6372000A65AA678665C6E6/);
+  await dialogo.getByRole('button', { name: 'Fechar' }).click();
+  await expect(dialogo).toBeHidden();
 });
 
 test('suporte usa o WhatsApp padronizado', async ({ page }) => {

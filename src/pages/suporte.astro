@@ -2,7 +2,17 @@
 import Documento from '../layouts/Documento.astro';
 import { WHATSAPP_COMERCIAL } from '../dados/contato';
 
+// Widget do agente de suporte (GPT Maker). Sem JS, o link abre o chat em outra aba.
+const TECO_IA = 'https://app.gptmaker.ai/widget/3FA2E5400B6372000A65AA678665C6E6/iframe';
+
 const canais = [
+  {
+    titulo: 'Teco IA',
+    texto: 'Fale com seu agente de suporte sempre disponível.',
+    rotulo: 'Abrir chat',
+    href: TECO_IA,
+    chat: true,
+  },
   {
     titulo: 'Tutoriais em vídeo',
     texto: 'Playlist com o passo a passo das funções mais usadas da plataforma.',
@@ -24,18 +34,43 @@ const canais = [
 ];
 ---
 
-<Documento titulo="Suporte" descricao="Canais de atendimento da transforme.tech: tutoriais, WhatsApp e abertura de chamados.">
+<Documento titulo="Suporte" descricao="Canais de atendimento da transforme.tech: Teco IA, tutoriais, WhatsApp e abertura de chamados.">
   <p>Escolha o canal que melhor resolve a sua necessidade.</p>
 
-  <div class="not-prose mt-8 grid gap-4 md:grid-cols-3">
+  <div class="not-prose mt-8 grid gap-4 md:grid-cols-2">
     {canais.map((c) => (
       <article class="rounded-2xl border border-[var(--borda)] p-6">
         <h2 class="text-xl text-[var(--texto-forte)]">{c.titulo}</h2>
         <p class="mt-2 text-sm text-[var(--texto-suave)]">{c.texto}</p>
-        <a href={c.href} rel="noopener" class="mt-4 inline-block text-sm font-semibold text-[var(--acento)]">
+        <a href={c.href} rel="noopener" {...(c.chat && { 'data-abrir-teco': '', target: '_blank' })} class="mt-4 inline-block text-sm font-semibold text-[var(--acento)]">
           {c.rotulo} →
         </a>
       </article>
     ))}
   </div>
+
+  <dialog data-teco-dialog aria-label="Chat com o Teco IA" class="not-prose m-auto h-[min(760px,calc(100dvh-2rem))] w-[calc(100%-2rem)] max-w-xl flex-col overflow-hidden rounded-2xl border border-[var(--borda)] bg-[var(--superficie)] p-0 text-[var(--texto-forte)] shadow-xl backdrop:bg-black/60 open:flex">
+    <div class="flex items-center justify-between border-b border-[var(--borda)] px-5 py-3">
+      <p class="font-semibold">Teco IA</p>
+      <button type="button" data-fechar-teco class="text-sm underline">Fechar</button>
+    </div>
+    <iframe data-teco-iframe title="Chat com o Teco IA, agente de suporte" allow="microphone" class="w-full flex-1 border-0"></iframe>
+  </dialog>
 </Documento>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-teco-dialog]');
+  const iframe = document.querySelector<HTMLIFrameElement>('[data-teco-iframe]');
+  const abrir = document.querySelector<HTMLAnchorElement>('[data-abrir-teco]');
+
+  abrir?.addEventListener('click', (e) => {
+    if (!dialog || !iframe) return;
+    e.preventDefault();
+    // Só carrega o widget quando o visitante pede o chat.
+    if (!iframe.src) iframe.src = abrir.href;
+    dialog.showModal();
+  });
+  document.querySelector('[data-fechar-teco]')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog?.addEventListener('close', () => abrir?.focus());
+</script>
