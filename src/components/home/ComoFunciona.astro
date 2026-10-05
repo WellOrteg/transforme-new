@@ -1,0 +1,63 @@
+---
+import Grafismo from '../marca/Grafismo.astro';
+
+// O §8 do roteiro. Existe para derrubar a objeção que o próprio documento nomeia
+// — "será que vai ser difícil implantar?" — e por isso é a seção mais simples da
+// página: quatro passos e um convite.
+//
+// É uma <ol> de verdade: a ordem é o conteúdo, não a apresentação.
+//
+// O CTA aqui absorve a "Chamada do meio" do site anterior, que ficava solta entre
+// seções sem argumento que a justificasse. Aqui ela vem logo depois de a página
+// explicar que começar é simples, que é quando o convite faz sentido.
+const passos = [
+  {
+    titulo: 'Entendemos sua realidade',
+    texto: 'Conversamos com sua equipe para entender processos, desafios e objetivos.',
+  },
+  {
+    titulo: 'Montamos a solução',
+    texto: 'Indicamos os módulos e planos que realmente fazem sentido para sua organização.',
+  },
+  {
+    titulo: 'Implantamos juntos',
+    texto: 'Configuramos a plataforma e capacitamos sua equipe.',
+  },
+  {
+    titulo: 'Você evolui com a gente',
+    texto: 'Conte com suporte e novas soluções conforme sua organização cresce.',
+  },
+];
+---
+
+<section id="como-funciona" class="relative overflow-clip border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <Grafismo class="-right-24 -top-20 w-[280px] text-[var(--acento)]" opacidade={0.07} />
+
+  <div class="relative mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <h2 data-revela class="max-w-2xl text-[clamp(2rem,4vw,3.25rem)]">
+      Começar é mais simples do que parece.
+    </h2>
+
+    <ol data-revela-grupo class="mt-10 md:mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {passos.map((p, i) => (
+        <li class="border-t border-[var(--borda)] pt-6">
+          <span class="font-[family-name:var(--font-display)] text-sm text-[var(--acento)]">
+            0{i + 1}
+          </span>
+          <h3 class="mt-3 text-xl leading-snug">{p.titulo}</h3>
+          <p class="mt-3 text-[var(--texto-suave)]">{p.texto}</p>
+        </li>
+      ))}
+    </ol>
+
+    <a
+      href="#contato"
+      data-revela
+      data-acao
+      class="mt-10 md:mt-14 inline-block rounded-full px-6 py-3 text-sm font-semibold text-[var(--acento-texto)]"
+      style="background: var(--acento-superficie)"
+    >
+      Quero conversar sobre minha organização
+    </a>
+  </div>
+</section>

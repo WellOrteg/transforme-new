@@ -1,0 +1,34 @@
+---
+import { publicos } from '../../dados/publicos';
+
+// O §5 do roteiro. Quatro cartões em duas colunas: o quarto rótulo é uma frase
+// inteira e não caberia bem em quatro colunas lado a lado.
+//
+// O título respondia "Tecnologia que entende o terceiro setor."; em 09/09/2026
+// o dono trocou por "É para organizações como a sua.", que responde direto à
+// pergunta da seção anterior ("Sua organização passa por isso?").
+//
+// A seção fechava com "tudo que você precisa em um só lugar." na display,
+// grande e sozinha. O dono tirou a frase em 08/09/2026 — a seção termina nos
+// cartões.
+//
+// O vídeo institucional que ficava aqui foi para o Diferencial, onde o assunto
+// é parceria e ele sustenta o argumento em vez de decorar.
+---
+
+<section id="para-quem" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <h2 data-revela class="max-w-3xl text-[clamp(2rem,4vw,3.25rem)]">
+      É para organizações como a sua.
+    </h2>
+
+    <div data-revela-grupo class="mt-10 md:mt-14 grid gap-6 sm:grid-cols-2">
+      {publicos.map((p) => (
+        <article data-cartao class="rounded-2xl border border-[var(--borda)] p-7">
+          <h3 class="text-xl leading-snug">{p.titulo}</h3>
+          <p class="mt-3 text-[var(--texto-suave)]">{p.texto}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,375 @@
+/* Sistema de movimento — "o arco que se fecha"
+ *
+ * A marca são dois arcos desenhados de um traço só. O movimento do site segue a
+ * mesma mão: percurso curto, uma única curva de tempo, nada que quique. Toda
+ * animação é CSS — o site continua sem enviar JavaScript para se mexer, e o que
+ * a pessoa precisa ler nunca depende de a animação rodar.
+ *
+ * Regras que valem para tudo aqui:
+ * 1. Só transform e opacity animam. Nada que force reflow — é o que mantém o CLS
+ *    da home abaixo de 0,02 em tests/e2e/movimento.spec.ts.
+ * 2. Todo estado inicial escondido vive dentro de
+ *    `@media (prefers-reduced-motion: no-preference)`. Quem pede menos movimento
+ *    não recebe opacidade 0 nenhuma — recebe a página pronta.
+ * 3. Revelação por rolagem usa animation-timeline, não IntersectionObserver.
+ *    Onde o navegador não suporta, o @supports não casa e o conteúdo já está lá.
+ */
+
+:root {
+  --mov-rapido: 180ms;
+  --mov-base: 420ms;
+  --mov-longo: 900ms;
+  --mov-viagem: 14px;
+  /* Duração simbólica das animações comandadas pela rolagem: a timeline manda no
+     progresso, não o relógio. Vem de uma variável de propósito: o minificador
+     funde `animation` + `animation-timeline` num atalho que o Chrome rejeita
+     quando os valores são todos literais, e o var() impede essa fusão. */
+  --mov-imediato: 1ms;
+}
+
+@keyframes mov-entrar {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--mov-viagem), 0);
+  }
+}
+
+@keyframes mov-desenhar {
+  from {
+    stroke-dashoffset: 620;
+  }
+}
+
+@keyframes mov-deslizar {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes mov-assentar {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mov-progresso {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes mov-rola {
+  0%,
+  7% {
+    transform: translateY(0);
+  }
+  46%,
+  60% {
+    transform: translateY(calc(var(--desl, 100) * -1px));
+  }
+  99%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mov-viva {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.72);
+  }
+}
+
+@keyframes mov-rosca {
+  0% {
+    stroke-dashoffset: var(--volta);
+  }
+  18%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes mov-depoimentos {
+  0%,
+  1% {
+    opacity: 0;
+  }
+  3%,
+  15% {
+    opacity: 1;
+  }
+  17%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes mov-preenche {
+  0% {
+    transform: scaleX(0);
+  }
+  14%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Micro-interações — presentes sempre; o bloco global de prefers-reduced-motion
+ * em tokens.css já as encurta para 0,01ms.
+ * ------------------------------------------------------------------------- */
+
+[data-acao] {
+  transition:
+    transform var(--mov-rapido) var(--ease-suave),
+    box-shadow var(--mov-rapido) var(--ease-suave),
+    filter var(--mov-rapido) var(--ease-suave);
+}
+[data-acao]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px -12px rgb(127 86 218 / 0.75);
+  filter: saturate(1.08);
+}
+[data-acao]:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Seta que avança um passo quando o link é convidado. */
+[data-seta] {
+  display: inline-block;
+  transition: transform var(--mov-rapido) var(--ease-suave);
+}
+:where(a, button):hover [data-seta],
+:where(a, button):focus-visible [data-seta] {
+  transform: translateX(4px);
+}
+
+/* Cartão que sobe um fio de cabelo e acende a borda. */
+[data-cartao] {
+  transition:
+    transform var(--mov-base) var(--ease-suave),
+    border-color var(--mov-base) var(--ease-suave),
+    box-shadow var(--mov-base) var(--ease-suave);
+}
+[data-cartao]:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--acento) 55%, transparent);
+  box-shadow: 0 18px 40px -28px rgb(11 10 96 / 0.55);
+}
+[data-tema="escuro"] [data-cartao]:hover {
+  box-shadow: 0 18px 44px -26px rgb(0 0 0 / 0.8);
+}
+
+/* Link de navegação: o sublinhado cresce da esquerda, não pisca. */
+[data-link] {
+  background-image: linear-gradient(var(--acento), var(--acento));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition:
+    background-size var(--mov-base) var(--ease-suave),
+    color var(--mov-rapido) var(--ease-suave);
+}
+[data-link]:hover,
+[data-link]:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Capa gerada do post: os arcos giram um grau ao passar o ponteiro no cartão. */
+[data-capa] svg {
+  transition: transform var(--mov-longo) var(--ease-suave);
+}
+[data-cartao]:hover [data-capa] svg {
+  transform: rotate(6deg) scale(1.04);
+}
+
+/* O arco da rosca do painel desenhado. Fica fora da consulta de movimento: sem
+   animação nenhuma, ele já aparece fechado na proporção certa. */
+[data-rosca] {
+  stroke-dasharray: var(--volta, 120) 999;
+}
+
+/* FAQ: a resposta abre em altura de verdade onde o navegador sabe interpolar. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size var(--mov-base) var(--ease-suave),
+      content-visibility var(--mov-base) allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Cabeçalho: fica no topo e, depois dos primeiros 120px, ganha um fio de luz e
+ * uma sombra — o sinal de que a página está correndo por baixo. O fundo navy
+ * continua opaco: transparência aqui deixaria o texto branco sobre as faixas
+ * claras do blog e das institucionais.
+ * ------------------------------------------------------------------------- */
+
+header[data-tema="escuro"] {
+  position: sticky;
+  top: 0;
+}
+header[data-tema="escuro"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--color-roxo-400) 70%, transparent),
+    transparent
+  );
+  box-shadow: 0 12px 28px -18px rgb(0 0 0 / 0.9);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    header[data-tema="escuro"]::after {
+      animation: mov-assentar var(--mov-imediato) linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Barra de progresso da leitura: a mesma timeline de rolagem, em escala
+ * horizontal. Não anima largura — anima transform.
+ * ------------------------------------------------------------------------- */
+
+@supports (animation-timeline: scroll()) {
+  [data-progresso] > i {
+    width: 100%;
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: mov-progresso var(--mov-imediato) linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Entradas e revelações. Tudo daqui para baixo só existe para quem não pediu
+ * menos movimento.
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Sequência de abertura da home. --i é a posição na fila. */
+  [data-entra] {
+    animation: mov-entrar var(--mov-base) var(--ease-suave) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  /* O painel desenhado da faixa da plataforma: um laço de 18s que termina onde
+     começou. O conteúdo rola, as barras respiram, a rosca se fecha e as linhas
+     se preenchem — tudo na mesma volta, para os movimentos não brigarem. */
+  [data-painel-animado] [data-rola] {
+    animation: mov-rola 18s var(--ease-suave) infinite;
+  }
+  [data-painel-animado] [data-viva] > rect {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: mov-viva 6s var(--ease-suave) infinite;
+    animation-delay: calc(var(--i, 0) * 220ms);
+  }
+  [data-painel-animado] [data-rosca] {
+    animation: mov-rosca 18s var(--ease-suave) infinite;
+  }
+  [data-painel-animado] [data-preenche] {
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+    animation: mov-preenche 18s var(--ease-suave) infinite;
+    animation-delay: calc(var(--i, 0) * 120ms);
+  }
+
+  /* Os arcos da marca se desenham no hero. */
+  [data-desenha] path {
+    stroke-dasharray: 620;
+    animation: mov-desenhar 1.8s var(--ease-suave) both;
+    animation-delay: 180ms;
+  }
+  [data-desenha] path:nth-child(2) {
+    animation-delay: 420ms;
+  }
+
+  /* Revelação por rolagem. Cada elemento tem a própria timeline de vista, então
+     o escalonamento sai da ordem em que entram na tela — não de um delay
+     inventado.
+     A faixa é medida na fase `cover`, não na `entry`: em `entry` a revelação
+     inteira caberia nos últimos 13% da tela, onde ninguém a veria. Em
+     `cover 0% → 20%` o elemento termina de aparecer com o topo por volta de
+     75% da altura da janela — sobe enquanto surge, e nunca fica translúcido
+     na faixa em que a pessoa está lendo. */
+  @supports (animation-timeline: view()) {
+    [data-revela],
+    [data-revela-grupo] > * {
+      /* Escala de tempo linear: numa animação puxada pela rolagem, a curva de
+         saída suave do resto do site consumiria 70% da opacidade nos primeiros
+         20% do percurso — o efeito acabaria antes de a pessoa perceber. */
+      --mov-viagem: 22px;
+      animation: mov-entrar var(--mov-base) linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 30%;
+    }
+  }
+
+  /* Fita de logos. O conteúdo é duplicado no markup; o deslocamento de -50%
+     recomeça exatamente onde a primeira cópia terminou. A duração acompanha a
+     largura da fita: uma cópia mede ~1890px e passa em 90s, ou seja ~21px por
+     segundo — devagar o bastante para ler cada logo sem persegui-lo. */
+  [data-fita] {
+    animation: mov-deslizar 90s linear infinite;
+  }
+  [data-fita-janela]:hover [data-fita],
+  [data-fita-janela]:focus-within [data-fita] {
+    animation-play-state: paused;
+  }
+
+  /* Os seis depoimentos ocupam um bloco só: aqui eles passam a dividir a mesma
+     célula da grade e se revezam, 7s cada um dos 42s da volta. A caixa fica com
+     a altura da maior citação, então a troca não desloca nada da página.
+
+     Fora desta media query — quem pede menos movimento, ou um navegador sem o
+     CSS — a grade continua em linhas e as seis aparecem em coluna. Nenhuma
+     citação depende da animação para ser lida. */
+  [data-depoimentos] > figure {
+    grid-area: 1 / 1;
+    opacity: 0;
+    animation: mov-depoimentos 42s linear infinite;
+    animation-delay: calc(var(--i, 0) * 7s);
+  }
+  [data-depoimentos]:hover > figure,
+  [data-depoimentos]:focus-within > figure {
+    animation-play-state: paused;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Transição entre páginas — nativa do navegador, sem roteador em JavaScript.
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root) {
+  animation: mov-assentar var(--mov-rapido) var(--ease-suave) reverse;
+}
+::view-transition-new(root) {
+  animation: mov-entrar var(--mov-base) var(--ease-suave);
+}

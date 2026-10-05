@@ -1,0 +1,41 @@
+---
+import { areas } from '../../dados/solucoes';
+import IconeArea from './IconeArea.astro';
+
+// O §6 do roteiro. Substitui os 12 blocos de benefício do site anterior: as
+// mesmas capacidades, reagrupadas em cinco áreas, cada uma fechando com o
+// resultado que entrega.
+//
+// A lista de capacidades é `<ul>` de verdade: quem usa leitor de tela ouve
+// quantos itens a área tem antes de percorrê-los.
+---
+
+<section id="solucoes" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <h2 data-revela class="max-w-3xl text-[clamp(2rem,4vw,3.25rem)]">
+      Tudo o que sua organização precisa. Integrado em um só lugar.
+    </h2>
+
+    <div data-revela-grupo class="mt-10 md:mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {areas.map((a) => (
+        <article data-cartao class="flex flex-col rounded-2xl border border-[var(--borda)] p-7">
+          <IconeArea id={a.id} class="h-9 w-9 text-[var(--acento)]" />
+          <h3 class="mt-5 text-xl leading-snug">{a.titulo}</h3>
+
+          <ul class="mt-4 grow space-y-1.5 text-sm text-[var(--texto-suave)]">
+            {a.itens.map((item) => (
+              <li class="flex gap-2">
+                <span aria-hidden="true" class="text-[var(--acento)]">·</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <p class="mt-6 border-t border-[var(--borda)] pt-4 text-sm text-[var(--texto-suave)]">
+            <b class="font-semibold text-[var(--texto-forte)]">Resultado:</b> {a.resultado}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

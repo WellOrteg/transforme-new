@@ -1,0 +1,91 @@
+---
+// O §3 do roteiro: os mesmos logos que já estavam aqui, com o rótulo neutro
+// ("Estão usando transforme.tech") virando afirmação de confiança, e uma linha
+// dizendo de que tipos de organização se trata.
+//
+// O número aqui é o MESMO da seção Numeros. Se um mudar, o outro muda junto: a
+// home não pode afirmar dois tamanhos diferentes de base de clientes.
+//
+// Os arquivos vêm do site atual, em public/clientes/, passados por
+// scripts/_aparar-logos.mts: sem a moldura vazia que vinha no PNG, a altura
+// pedida aqui é a altura da marca de verdade, e a medida guardada é o dobro da
+// exibida — nem borrado em tela densa, nem 1280px para mostrar 68.
+// Só usamos nome de organização no alt quando ele é recuperável da fonte original;
+// para os demais, um alt genérico honesto evita fabricar uma alegação de cliente.
+const clientes = [
+  { nome: 'AGEMIW', arquivo: '/clientes/agemiw.png', largura: 290, altura: 106 },
+  { nome: 'Irmandade Evangélica Betânia', arquivo: '/clientes/irmandade-betania.png', largura: 140, altura: 136 },
+  { nome: 'Nations Help', arquivo: '/clientes/nations-help.png', largura: 382, altura: 90 },
+  { nome: 'Logo de organização parceira', arquivo: '/clientes/cliente-02.png', largura: 312, altura: 108 },
+  { nome: 'Logo de organização parceira', arquivo: '/clientes/cliente-03.png', largura: 183, altura: 136 },
+  { nome: 'Logo de organização parceira', arquivo: '/clientes/cliente-05.png', largura: 266, altura: 60 },
+  { nome: 'Logo de organização parceira', arquivo: '/clientes/cliente-06.png', largura: 289, altura: 118 },
+  { nome: 'Logo de organização parceira', arquivo: '/clientes/cliente-07.png', largura: 287, altura: 116 },
+  { nome: 'Logo de organização parceira', arquivo: '/clientes/cliente-08-logo-site.png', largura: 342, altura: 98 },
+];
+
+// Dar a mesma altura a todos deixaria o logo quadrado enorme ao lado do logo
+// deitado. Normalizamos pela área — quanto mais deitada a marca, mais baixa ela
+// entra — com piso e teto para nenhuma sumir nem estourar a faixa.
+const REFERENCIA = 92;
+const medida = (c: (typeof clientes)[number]) =>
+  Math.round(Math.min(68, Math.max(44, REFERENCIA / Math.sqrt(c.largura / c.altura))));
+---
+
+<section id="prova-social" class="border-b border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto max-w-6xl px-6 py-10 md:py-16">
+    <h2 data-revela class="text-center text-[clamp(1.5rem,2.6vw,2rem)] text-[var(--texto-forte)]">
+      +200 organizações já confiam na transforme.tech
+    </h2>
+    <p data-revela class="mx-auto mt-3 max-w-2xl text-center text-[var(--texto-suave)]">
+      OSCs, fundações, associações, acampamentos, igrejas, agências missionárias e muito mais…
+    </p>
+
+    {/* A fita corre devagar e para sob o ponteiro ou o foco do teclado, para
+        ninguém precisar perseguir um logo. As bordas somem numa máscara em vez
+        de cortar em seco. Quem pede menos movimento recebe a fita parada — e,
+        como a lista quebra em linhas, continua vendo todos os logos. */}
+    <div
+      data-fita-janela
+      class="mt-10 overflow-clip [mask-image:linear-gradient(90deg,transparent,#000_7%,#000_93%,transparent)]"
+    >
+      <div data-fita class="flex w-max motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center">
+        <ul class="flex shrink-0 items-center gap-x-16 px-8 motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-y-10">
+          {clientes.map((c) => (
+            <li>
+              <img
+                src={c.arquivo}
+                alt={c.nome}
+                width={c.largura}
+                height={c.altura}
+                loading="lazy"
+                decoding="async"
+                style={`height:${medida(c)}px`}
+                class="w-auto opacity-90"
+              />
+            </li>
+          ))}
+        </ul>
+
+        {/* Cópia exata que emenda a volta da fita. Invisível para leitores de
+            tela: os mesmos logos já foram anunciados acima. */}
+        <ul aria-hidden="true" class="flex shrink-0 items-center gap-x-16 px-8 motion-reduce:hidden">
+          {clientes.map((c) => (
+            <li>
+              <img
+                src={c.arquivo}
+                alt=""
+                width={c.largura}
+                height={c.altura}
+                loading="lazy"
+                decoding="async"
+                style={`height:${medida(c)}px`}
+                class="w-auto opacity-90"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

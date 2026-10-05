@@ -1,0 +1,35 @@
+---
+---
+
+<div
+  data-progresso
+  class="fixed inset-x-0 top-0 z-40 h-[3px] bg-white/10"
+  role="progressbar"
+  aria-label="Progresso da leitura"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-valuenow="0"
+>
+  <i class="block h-full w-0 bg-gradient-to-r from-[var(--color-roxo-400)] to-[var(--color-roxo-300)]"></i>
+</div>
+
+<script>
+  // Onde há timeline de rolagem, quem desenha a barra é o CSS, em transform —
+  // sem trabalho de layout a cada evento de rolagem (ver src/styles/movimento.css).
+  // O JavaScript aqui cuida só do que o CSS não alcança: o valor que o leitor de
+  // tela anuncia. Nos navegadores sem timeline, ele também assume o desenho.
+  const barra = document.querySelector('[data-progresso]');
+  const preenchimento = barra?.querySelector('i') as HTMLElement | null;
+  const cssDesenha = CSS.supports('animation-timeline: scroll()');
+
+  if (barra && preenchimento) {
+    const atualizar = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = total > 0 ? Math.min(100, Math.round((window.scrollY / total) * 100)) : 0;
+      if (!cssDesenha) preenchimento.style.width = `${pct}%`;
+      barra.setAttribute('aria-valuenow', String(pct));
+    };
+    addEventListener('scroll', atualizar, { passive: true });
+    atualizar();
+  }
+</script>

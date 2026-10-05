@@ -1,0 +1,102 @@
+---
+import CarregarTurnstile from './CarregarTurnstile.astro';
+
+const CHAVE_TURNSTILE = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+
+// O §15 do roteiro do cliente lista seis desafios. Eles entram como sugestão de
+// um campo de texto, não como lista fechada: quem se reconhece numa delas
+// escolhe em um toque, e quem tem outro problema descreve o próprio. Sem
+// JavaScript, o datalist é ignorado e sobra um campo de texto comum.
+const desafios = [
+  'Captação de recursos',
+  'Gestão financeira',
+  'Relacionamento/CRM',
+  'Gestão de projetos/impacto',
+  'Eventos/cursos',
+  'Outro',
+];
+---
+
+<form method="post" action="/api/contato" class="grid gap-4">
+  <div>
+    <label for="contato-nome" class="mb-1 block text-sm">Nome <span aria-hidden="true">*</span></label>
+    <input id="contato-nome" name="nome" type="text" required autocomplete="name"
+      class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+  </div>
+
+  <div>
+    <label for="contato-organizacao" class="mb-1 block text-sm">Organização <span aria-hidden="true">*</span></label>
+    <input id="contato-organizacao" name="organizacao" type="text" required autocomplete="organization"
+      class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+  </div>
+
+  <div>
+    <label for="contato-whatsapp" class="mb-1 block text-sm">WhatsApp <span aria-hidden="true">*</span></label>
+    <input id="contato-whatsapp" name="whatsapp" type="tel" required autocomplete="tel"
+      class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+  </div>
+
+  <div>
+    <label for="contato-email" class="mb-1 block text-sm">E-mail <span aria-hidden="true">*</span></label>
+    <input id="contato-email" name="email" type="email" required autocomplete="email"
+      class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+  </div>
+
+  <div>
+    <label for="contato-desafio" class="mb-1 block text-sm">
+      Qual o principal desafio da sua organização?
+    </label>
+    <input id="contato-desafio" name="desafio" type="text" list="desafios-organizacao" maxlength="200"
+      class="w-full rounded-lg border border-[var(--borda)] bg-transparent px-4 py-3" />
+    <datalist id="desafios-organizacao">
+      {desafios.map((d) => <option value={d}></option>)}
+    </datalist>
+  </div>
+
+  <div class="cf-turnstile" data-sitekey={CHAVE_TURNSTILE}></div>
+
+  <p role="alert" aria-live="polite" data-erro class="text-sm text-[#C0392B] empty:hidden"></p>
+
+  <button type="submit" data-acao
+    class="justify-self-start rounded-full px-6 py-3 text-sm font-semibold text-[var(--acento-texto)]"
+    style="background: var(--acento-superficie)">
+    Enviar formulário
+  </button>
+
+  <p class="text-xs text-[var(--texto-suave)]">
+    Ao enviar, você concorda com a nossa
+    <a href="/politica-de-privacidade/" class="underline">política de privacidade</a>.
+  </p>
+</form>
+
+<CarregarTurnstile />
+
+<script>
+  const form = document.querySelector('form[action="/api/contato"]') as HTMLFormElement | null;
+  const erro = form?.querySelector('[data-erro]') as HTMLElement | null;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!erro) return;
+    erro.textContent = '';
+
+    const botao = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    botao.disabled = true;
+
+    try {
+      const r = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+      const dados = (await r.json()) as { ok: boolean; erros?: Record<string, string> };
+
+      if (dados.ok) {
+        form.innerHTML =
+          '<p class="text-[var(--texto-forte)]">Mensagem enviada. Retornamos em breve.</p>';
+        return;
+      }
+      erro.textContent = Object.values(dados.erros ?? {}).join(' ');
+    } catch {
+      erro.textContent = 'Não foi possível enviar agora. Tente novamente em instantes.';
+    } finally {
+      botao.disabled = false;
+    }
+  });
+</script>

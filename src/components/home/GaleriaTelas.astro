@@ -1,0 +1,164 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { telas, type Tela } from '../../dados/telas';
+import PainelAnimado from './PainelAnimado.astro';
+
+// Abas em CSS puro: um grupo de radios comanda qual painel aparece, via :has().
+// A razão é o orçamento de 20 KB de JavaScript da home, verificado em
+// tests/e2e/desempenho.spec.ts — abas em JS com roving tabindex custariam mais do
+// que a folga disponível. O radio dá navegação por setas, foco visível e rótulo
+// acessível de graça, e funciona com o JavaScript desligado.
+//
+// Não usamos role="tab"/"tablist": isso anunciaria um widget que não é o que
+// está aqui. Um fieldset com legenda descreve o que a coisa realmente é.
+//
+// A caixa tem proporção fixa: sem isso, trocar de tela mudaria a altura da seção
+// e estouraria o CLS medido em movimento.spec.ts.
+const capturas = import.meta.glob<{ default: ImageMetadata }>('../../assets/site/telas/tela-*.{png,jpg,jpeg,webp}', {
+  eager: true,
+});
+const formatos = ['png', 'jpg', 'jpeg', 'webp'] as const;
+
+function capturaDaTela(tela: Tela) {
+  if (tela.imagem) return tela.imagem;
+
+  for (const formato of formatos) {
+    const modulo = capturas[`../../assets/site/telas/tela-${tela.id}.${formato}`];
+    if (modulo) return modulo.default;
+  }
+}
+---
+
+<fieldset data-galeria class="m-0 border-0 p-0">
+  <legend class="sr-only">Telas da plataforma</legend>
+
+  {telas.map((t, i) => (
+    <input
+      type="radio"
+      name="tela-plataforma"
+      id={`tela-${t.id}`}
+      value={t.id}
+      checked={i === 0}
+      class="sr-only"
+    />
+  ))}
+
+  <div data-abas class="flex flex-wrap gap-2">
+    {telas.map((t) => (
+      <label
+        for={`tela-${t.id}`}
+        class="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-sm text-[var(--texto-suave)] transition"
+      >
+        {t.nome}
+      </label>
+    ))}
+  </div>
+
+  <div data-paineis class="mt-5">
+    {
+      telas.map((t) => {
+        const captura = capturaDaTela(t);
+
+        return (
+          <div data-painel={t.id}>
+            <div class="aspect-[16/10] overflow-clip rounded-2xl border border-white/15 bg-black/25">
+              {captura ? (
+                <Image
+                  src={captura}
+                  alt=""
+                  width={896}
+                  height={560}
+                  loading="lazy"
+                  class="h-full w-full bg-white object-contain"
+                />
+              ) : t.id === 'dashboard' ? (
+                // Único caso sem captura que não cai na moldura vazia: o
+                // Dashboard tem um desenho no lugar da imagem, não uma pendência.
+                <PainelAnimado />
+              ) : (
+                <div class="grid h-full place-items-center p-6 text-center">
+                  <p class="text-sm text-[var(--texto-suave)]">
+                    <b class="block text-[var(--texto-forte)]">{t.nome}</b>
+                    Captura de tela ainda não fornecida
+                  </p>
+                </div>
+              )}
+            </div>
+            <p class="mt-4 text-sm text-[var(--texto-suave)]">{t.chamada}</p>
+          </div>
+        );
+      })
+    }
+  </div>
+</fieldset>
+
+<style>
+  /* Duas armadilhas deste arquivo que só existiam na cabeça de quem escreveu,
+     e por isso ficam registradas aqui:
+
+     (a) O escopo de estilo do Astro dentro de :has() é inconsistente: nas
+     listas de seletores separados por vírgula abaixo, o PRIMEIRO seletor de
+     cada lista perde o atributo de escopo (data-astro-cid-*) — os demais o
+     mantêm. Hoje isso é inofensivo: só há uma instância desta galeria na
+     página, e os ids dos radios (#tela-dashboard etc.) são fixos, então duas
+     instâncias já colidiriam por id duplicado antes desse vazamento de
+     escopo chegar a importar.
+
+     (b) Por causa de (a) e dos ids fixos, este componente NÃO é reutilizável
+     em mais de uma instância por página. Colocar uma segunda galeria na
+     mesma página pede tornar os ids únicos por instância e só depois lidar
+     com o vazamento de escopo acima.
+
+     Ao acrescentar uma TELA NOVA (não uma imagem numa tela já existente), as
+     três listas abaixo — visibilidade do painel, aba acesa e anel de foco —
+     também precisam ganhar a linha da tela nova. */
+
+  /* Sem :has(), a fita de abas não teria efeito nenhum — então ela some e a
+     galeria vira uma lista com todas as telas empilhadas. Feio, mas nada
+     desaparece e nenhum controle mente sobre o que faz. */
+  [data-galeria] [data-abas] {
+    display: none;
+  }
+
+  @supports selector(:has(*)) {
+    [data-galeria] [data-abas] {
+      display: flex;
+    }
+    [data-galeria] [data-painel] {
+      display: none;
+    }
+    [data-galeria]:has(#tela-dashboard:checked) [data-painel='dashboard'],
+    [data-galeria]:has(#tela-doacoes:checked) [data-painel='doacoes'],
+    [data-galeria]:has(#tela-financeiro:checked) [data-painel='financeiro'],
+    [data-galeria]:has(#tela-crm:checked) [data-painel='crm'],
+    [data-galeria]:has(#tela-impacto:checked) [data-painel='impacto'] {
+      display: block;
+    }
+
+    /* A aba escolhida se acende. O anel de foco vem do radio, que está fora da
+       tela mas continua sendo o elemento focado. */
+    [data-galeria]:has(#tela-dashboard:checked) label[for='tela-dashboard'],
+    [data-galeria]:has(#tela-doacoes:checked) label[for='tela-doacoes'],
+    [data-galeria]:has(#tela-financeiro:checked) label[for='tela-financeiro'],
+    [data-galeria]:has(#tela-crm:checked) label[for='tela-crm'],
+    [data-galeria]:has(#tela-impacto:checked) label[for='tela-impacto'] {
+      border-color: var(--acento);
+      color: var(--texto-forte);
+      background: color-mix(in oklab, var(--acento) 22%, transparent);
+    }
+
+    /* O radio está fora da tela, então o anel de foco precisa aparecer no rótulo
+       que o representa — senão quem navega por teclado não vê onde está. */
+    [data-galeria] [data-abas] label {
+      outline-offset: 2px;
+    }
+    [data-galeria] #tela-dashboard:focus-visible ~ [data-abas] label[for='tela-dashboard'],
+    [data-galeria] #tela-doacoes:focus-visible ~ [data-abas] label[for='tela-doacoes'],
+    [data-galeria] #tela-financeiro:focus-visible ~ [data-abas] label[for='tela-financeiro'],
+    [data-galeria] #tela-crm:focus-visible ~ [data-abas] label[for='tela-crm'],
+    [data-galeria] #tela-impacto:focus-visible ~ [data-abas] label[for='tela-impacto'] {
+      outline: 2px solid var(--acento);
+    }
+  }
+</style>

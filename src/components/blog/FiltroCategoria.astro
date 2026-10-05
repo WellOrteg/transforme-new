@@ -1,0 +1,46 @@
+---
+import { CATEGORIAS } from '../../content.config';
+---
+
+<div data-filtro class="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoria">
+  <button
+    type="button"
+    data-categoria="todos"
+    aria-pressed="true"
+    class="rounded-full border border-white/20 px-4 py-1.5 text-xs text-[var(--texto-forte)] aria-pressed:bg-white aria-pressed:text-[var(--color-navy-900)]"
+  >
+    Todos
+  </button>
+  {
+    CATEGORIAS.map((c) => (
+      <button
+        type="button"
+        data-categoria={c}
+        aria-pressed="false"
+        class="rounded-full border border-white/20 px-4 py-1.5 text-xs text-[var(--texto-forte)] aria-pressed:bg-white aria-pressed:text-[var(--color-navy-900)]"
+      >
+        {c}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  const grupo = document.querySelector('[data-filtro]');
+  const posts = document.querySelectorAll('article[data-post]');
+
+  grupo?.addEventListener('click', (e) => {
+    const botao = (e.target as HTMLElement).closest('button');
+    if (!botao) return;
+
+    const alvo = botao.dataset.categoria!;
+    grupo.querySelectorAll('button').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b === botao));
+    });
+
+    posts.forEach((p) => {
+      const mostrar = alvo === 'todos' || p.getAttribute('data-categoria') === alvo;
+      (p as HTMLElement).hidden = !mostrar;
+    });
+  });
+</script>

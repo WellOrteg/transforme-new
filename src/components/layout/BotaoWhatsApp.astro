@@ -1,0 +1,39 @@
+---
+import IconeRede from './IconeRede.astro';
+import { linkWhatsApp } from '../../dados/contato';
+
+// O §16 do roteiro pede o WhatsApp permanentemente disponível e rotulado pela
+// oferta ("Falar com um especialista"), não pelo nome do aplicativo.
+//
+// Em telas largas o rótulo aparece por extenso. No celular sobra o símbolo, com
+// o rótulo indo para leitor de tela — mas a caixa continua com 56px, acima do
+// alvo de toque mínimo.
+//
+// `position: fixed` cobriria o rodapé sempre que ele estivesse na tela — o
+// link de redes sociais no canto inferior direito, por exemplo. Em vez disso,
+// o invólucro abaixo usa `position: sticky` com altura zero. Base.astro monta
+// este componente logo depois de <main>, dentro de uma div que só contém os
+// dois: essa div, não <main>, é o limite do sticky, então o botão acompanha a
+// rolagem a 20px do rodapé da janela e para de acompanhar assim que a div
+// termina — ele some antes do rodapé aparecer, em vez de sobrepor os links
+// dele. (Ficar fora de <main> importa por outro motivo também: a página de
+// suporte não pode oferecer o WhatsApp comercial dentro do conteúdo
+// principal, que ali é só o de suporte — tests/e2e/institucionais.spec.ts.)
+// Tudo em CSS, sem observers e sem JavaScript.
+//
+// Sem JavaScript: é um link.
+---
+
+<div class="pointer-events-none sticky bottom-5 z-40 flex h-0 items-end justify-end px-5">
+  <a
+    data-zap-flutuante
+    data-acao
+    href={linkWhatsApp()}
+    class="pointer-events-auto flex h-14 min-w-14 items-center gap-3 rounded-full px-4 text-sm font-semibold text-[var(--acento-texto)] shadow-lg sm:px-5"
+    style="background: linear-gradient(135deg, var(--color-roxo-500), var(--color-roxo-600))"
+  >
+    <IconeRede id="whatsapp" class="h-[22px] w-[22px] shrink-0" />
+    <span class="hidden sm:inline">Falar com um especialista</span>
+    <span class="sr-only sm:hidden">Falar com um especialista</span>
+  </a>
+</div>

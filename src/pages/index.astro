@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import ProvaSocial from '../components/home/ProvaSocial.astro';
+import Dor from '../components/home/Dor.astro';
+import ParaQuem from '../components/home/ParaQuem.astro';
+import Solucoes from '../components/home/Solucoes.astro';
+import VideoCliente from '../components/home/VideoCliente.astro';
+import ComoFunciona from '../components/home/ComoFunciona.astro';
+import Produto from '../components/home/Produto.astro';
+import Numeros from '../components/home/Numeros.astro';
+import Depoimentos from '../components/home/Depoimentos.astro';
+import Faq from '../components/home/Faq.astro';
+import CtaFinal from '../components/home/CtaFinal.astro';
+
+// A ordem segue o roteiro entregue pelo cliente, que conduz o visitante por
+// cinco perguntas: "isso é para mim" → "eles entendem meu problema" → "eles são
+// confiáveis" → "quero saber como funciona" → "vou conversar".
+//
+// Mexer na ordem sem mexer no argumento quebra a página: a dor só convence
+// depois da prova social, e as soluções só interessam depois da dor.
+//
+// Em 09/09/2026 saiu daqui a seção "Não somos apenas uma plataforma / Somos
+// parceiros da sua organização", a pedido do dono. O vídeo institucional que
+// morava nela foi para dentro da Dor, ao lado do parágrafo de fecho.
+---
+
+<Base
+  titulo="transforme.tech — tecnologia para organizações que transformam"
+  descricao="Gestão, doações online, recorrência, relacionamento e impacto em uma única plataforma, criada para organizações sociais e missionárias."
+>
+  <Hero />
+  <ProvaSocial />
+  <Dor />
+  <ParaQuem />
+  <Solucoes />
+  <VideoCliente />
+  <ComoFunciona />
+  <Produto />
+  <Numeros />
+  <Depoimentos />
+  <Faq />
+  <CtaFinal />
+</Base>

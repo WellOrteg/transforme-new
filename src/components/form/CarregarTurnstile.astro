@@ -1,0 +1,51 @@
+---
+// O api.js do Turnstile pesa ~82 KB. Carregado avidamente, ele entra no
+// caminho crítico de toda página que tem formulário — inclusive a home, e
+// estoura sozinho o orçamento de JavaScript verificado em
+// tests/e2e/desempenho.spec.ts.
+//
+// Aqui ele é buscado só quando o uso do formulário se aproxima: quando o
+// formulário entra no campo de visão (com folga de 400px) ou quando recebe o
+// primeiro foco/toque. Em ambos os casos sobra tempo de sobra até o envio,
+// que só acontece depois de a pessoa preencher os campos.
+//
+// O script é bundleado (não `is:inline`), então o Astro emite uma cópia só por
+// página mesmo com dois formulários — contato e newsletter.
+---
+
+<script>
+  const URL_TURNSTILE = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  let pedido = false;
+
+  function carregar() {
+    if (pedido) return;
+    pedido = true;
+    const s = document.createElement('script');
+    s.src = URL_TURNSTILE;
+    s.async = true;
+    s.defer = true;
+    document.head.append(s);
+  }
+
+  const formularios = document.querySelectorAll<HTMLFormElement>('form:has(.cf-turnstile)');
+
+  for (const form of formularios) {
+    form.addEventListener('focusin', carregar, { once: true });
+    form.addEventListener('pointerdown', carregar, { once: true });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) {
+          carregar();
+          observador.disconnect();
+        }
+      },
+      { rootMargin: '400px' },
+    );
+    for (const form of formularios) observador.observe(form);
+  } else {
+    carregar();
+  }
+</script>

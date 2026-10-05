@@ -1,0 +1,500 @@
+---
+import Documento from '../layouts/Documento.astro';
+
+const headings = [
+  { depth: 2, slug: 'sobre', text: 'Sobre a plataforma transforme.tech' },
+  { depth: 2, slug: 'conceitos', text: 'Conceitos de desenvolvimento utilizados por nossa empresa' },
+  { depth: 2, slug: 'anexo-1-modulos', text: 'ANEXO 1 – Descrição detalhada dos módulos da plataforma' },
+  { depth: 2, slug: 'seguranca', text: 'Gestão de Segurança de Acesso' },
+  { depth: 2, slug: 'cadastros', text: 'Gestão dos Cadastros' },
+  {
+    depth: 2,
+    slug: 'cobranca-boleto-cartao',
+    text: 'Serviços fornecidos em parceria para geração de boletos e recebimentos por cartão de crédito',
+  },
+  { depth: 2, slug: 'hotsite-captacao', text: 'Criador de Tela Personalizada para Captação de Recursos (hotsite)' },
+  { depth: 2, slug: 'apadrinhamento', text: 'Gestão de Apadrinhamento/Adoção Missionária' },
+  { depth: 2, slug: 'contas-a-receber-avulsa', text: 'Gestão do Contas a Receber – Oferta Avulsa' },
+  { depth: 2, slug: 'contas-a-receber-recorrente', text: 'Gestão do Contas a Receber Recorrente por projeto' },
+  { depth: 2, slug: 'contas-a-pagar', text: 'Gestão do Contas a Pagar' },
+  { depth: 2, slug: 'relatorios-financeiros', text: 'Gestão do Contas a Receber – Relatórios e Gráficos' },
+  { depth: 2, slug: 'emails-sms', text: 'Disparo de e-mails e SMS automáticos' },
+  { depth: 2, slug: 'atendimento-social', text: 'Gestão de Atividade e Atendimento Social' },
+  { depth: 2, slug: 'atas', text: 'Gestão de ata' },
+  { depth: 2, slug: 'inscricoes', text: 'Gestão de Inscrições' },
+  {
+    depth: 2,
+    slug: 'formularios-voluntarios',
+    text: 'Formulário para captação de voluntários e base de conhecimento para doador e beneficiários',
+  },
+  { depth: 2, slug: 'relacionamento-doador', text: 'Relacionamento com o doador' },
+  { depth: 2, slug: 'indicadores', text: 'Indicadores (novo)' },
+  { depth: 2, slug: 'anexo-2-adicionais', text: 'ANEXO 2 – Descrição detalhada das contratações adicionais' },
+  { depth: 2, slug: 'portal-doador', text: 'Módulo do Portal do Doador/Associado' },
+  {
+    depth: 2,
+    slug: 'portal-beneficiario',
+    text: 'Módulo do Portal Beneficiário (pode ser o missionário, o atendido, entre outros que são beneficiários da organização)',
+  },
+  { depth: 2, slug: 'dominio-personalizado', text: 'Domínio Personalizado' },
+  { depth: 2, slug: 'email-exclusivo', text: 'Email Exclusivo' },
+  { depth: 2, slug: 'whatsapp-notificacoes', text: 'Pacote de disparos de notificação via WhatsApp' },
+];
+---
+
+<Documento
+  titulo="Recursos da plataforma"
+  descricao="Catálogo completo dos módulos e funcionalidades da plataforma transforme.tech, incluindo anexos de contratações adicionais."
+  headings={headings}
+>
+  <h2 id="sobre">Sobre a plataforma transforme.tech</h2>
+  <p>“<strong>Somos catalisadores de transformação</strong>”</p>
+  <p>A Plataforma transforme.tech é uma solução pensada exclusivamente para a transformação social.</p>
+  <p>
+    A plataforma permite descomplicar e automatizar processos financeiros, doações online, controlar sua atividade
+    social e atendimento social, iniciar rapidamente sua campanha de captação de recursos online, oferecer
+    transparência e comunicação com os doadores/associados, trazer indicadores e muito mais.
+  </p>
+
+  <h3>Missão</h3>
+  <p>
+    Possibilitar o crescimento de organizações da sociedade civil e agências missionárias através do controle,
+    organização e gestão, com uma plataforma que se ajusta às necessidades de nossos clientes.
+  </p>
+
+  <h3>Visão</h3>
+  <p>
+    Gerar transformação organizacional e social através de nossa plataforma WEB de gestão, captação de recursos e
+    indicadores sociais, respeitando a individualidade de cada cliente e colaborador.
+  </p>
+
+  <h3>Pilares</h3>
+  <p>Pessoas, transformação e tecnologia.</p>
+
+  <h2 id="conceitos">Conceitos de desenvolvimento utilizados por nossa empresa</h2>
+
+  <h3>Integração</h3>
+  <p>
+    Possibilitar a integração dos dados entre as diversas áreas, proporcionando um grande aumento da eficiência,
+    redução de retrabalho e risco de erros, gerando, assim, uma gestão integrada da instituição.
+  </p>
+
+  <h3>Facilidade</h3>
+  <p>Criar uma interface moderna, que torne a utilização do sistema intuitiva e agradável.</p>
+
+  <h3>Flexibilidade</h3>
+  <p>
+    Aderir aos mais diversos processos de seu público-alvo através de parâmetros, criando a identidade de nossos
+    clientes e adaptando as várias estruturas institucionais.
+  </p>
+
+  <h3>Segurança</h3>
+  <p>
+    Acesso aos usuários controlado de maneira individual e em diversos níveis, com criptografia e certificado de
+    segurança, buscando proporcionar o máximo de segurança em sua utilização.
+  </p>
+
+  <p>
+    <strong
+      >Obs.: Os recursos que farão parte de seu plano vai depender do plano escolhido e das contratações realizadas.
+      Se ainda não possui é só fazer um contato conosco pelo nosso site e solicitar uma apresentação e proposta
+      comercial de acordo com suas necessidades.</strong
+    >
+  </p>
+
+  <h2 id="anexo-1-modulos">ANEXO 1 – Descrição detalhada dos módulos da plataforma</h2>
+
+  <h2 id="seguranca">Gestão de Segurança de Acesso</h2>
+  <ul>
+    <li>Sistema de senhas de acesso;</li>
+    <li>Controle de acessos por usuários;</li>
+    <li>Controle de perfis de acesso;</li>
+    <li>Customização do perfil de acesso personalizado por colaborador;</li>
+    <li>Log de acesso com data, hora e navegador de acesso.</li>
+  </ul>
+
+  <h2 id="cadastros">Gestão dos Cadastros</h2>
+  <ul>
+    <li>Cadastro de beneficiários/familiares (missionário, criança, entre outros);</li>
+    <li>Cadastro de doador (pessoa física ou jurídica);</li>
+    <li>Cadastro de familiares;</li>
+    <li>Cadastro de colaboradores;</li>
+    <li>Cadastro de projetos;</li>
+    <li>Cadastro de formas de pagamento;</li>
+    <li>Cadastro de campanha;</li>
+    <li>Cadastro de centro de custos;</li>
+    <li>Cadastro de grupo de despesas;</li>
+    <li>Relatório de beneficiário;</li>
+    <li>Relatório de doadores;</li>
+    <li>Controle de ativos e inativos de cada cadastro;</li>
+    <li>Relatório de doadores inativos (que pararam de colaborar financeiramente);</li>
+    <li>Impressão de etiqueta de doador;</li>
+    <li>
+      Relatórios de cadastro personalizados com opção de escolha dos campos que deseja incluir ou retirar do
+      relatório e ordenação pelo título dos Relatórios (alguns relatórios podem não ter disponibilizado este recurso
+      devido ao formato do mesmo).
+    </li>
+  </ul>
+
+  <p class="text-xs font-semibold uppercase tracking-wide text-[var(--acento)]">
+    Exclusivo transforme.tech, convênio IDeveloper/IUGU
+  </p>
+
+  <h2 id="cobranca-boleto-cartao">
+    Serviços fornecidos em parceria para geração de boletos e recebimentos por cartão de crédito
+  </h2>
+  <ul>
+    <li>
+      <ul>
+        <li>Boleto registrado sem cobranças adicionais, <strong>a</strong> <strong>taxa só será cobrada por boleto pago</strong>;</li>
+        <li>Baixa automática no sistema, sem intervenção do usuário;</li>
+        <li>Personalização do boleto para o cliente;</li>
+        <li>Possibilidade de envio automático de lembretes de vencimento e cobrança de boleto vencido;</li>
+      </ul>
+    </li>
+    <li><strong>Possibilidade de criação de checkout personalizado para captura e geração de cobrança da doação</strong>;</li>
+    <li>
+      Para os boletos vencidos o doador pode gerar boleto com novo vencimento diretamente por link fornecido, sem
+      precisar que seja gerado e enviado novo para o doador;
+    </li>
+    <li>
+      Controle de cobrança recorrente automático no sistema para cartão de crédito, com baixa e crédito automático
+      no próprio sistema;
+    </li>
+    <li>Impressão dos boletos em formato de carnê;</li>
+    <li>Bandeiras disponíveis na opção de cartão de crédito atualmente: Visa, MasterCard, Diners, American Express, Elo;</li>
+    <li>Possibilidade real de diminuição da inadimplência devido a todas as automatizações que estarão disponíveis;</li>
+    <li>
+      Possibilidade de doações com cartão de crédito internacional, porém a cobrança é feita em moeda Real e o
+      cartão de crédito do cliente faz o câmbio para a moeda local dele;
+    </li>
+    <li>
+      Possibilidade da inclusão de módulo no site da instituição onde o doador pode fazer seu cadastro, escolher
+      como deseja fazer sua doação (avulsa ou mensal), se através de boleto ou cartão de crédito, sendo computado
+      automaticamente no sistema web (em desenvolvimento).
+    </li>
+  </ul>
+  <p><strong>Obs.: Disponibilidade sujeita a análise cadastral.</strong></p>
+
+  <h2 id="hotsite-captacao">Criador de Tela Personalizada para Captação de Recursos (hotsite)</h2>
+  <p>
+    Com este recurso, a própria organização consegue criar várias campanhas personalizadas de captação, podendo os
+    doadores efetuar seu pagamento por boleto ou cartão de crédito diretamente pela internet. Todas as entradas e
+    transações são cadastradas automaticamente no sistema.
+  </p>
+  <ul>
+    <li>Cadastro do Checkout;</li>
+    <li>Checkout 100% personalizado para a campanha da instituição;</li>
+    <li>Possibilidade de captura de doação avulsa e/ou recorrente;</li>
+    <li>Captura de todas as tentativas de doações;</li>
+    <li>Cadastro automático na recorrência ou apadrinhamento da doação realizada;</li>
+    <li>Relatórios específicos das entradas pelo Checkout;</li>
+    <li>Envio automático de e-mail de agradecimento;</li>
+    <li>Possibilidade de compartilhamento da doação nas mídias sociais.</li>
+  </ul>
+
+  <h2 id="apadrinhamento">Gestão de Apadrinhamento/Adoção Missionária</h2>
+  <ul>
+    <li>
+      Cadastro da colaboração mensal do apadrinhamento (doador x beneficiário), podendo ter mais de 1 (um)
+      beneficiário por cobrança, possibilitando economia à instituição;
+    </li>
+    <li>Geração automática de cobrança mensal por apadrinhamento;</li>
+    <li>Controle de captador por apadrinhamento;</li>
+    <li>Relatório de Apadrinhados;</li>
+    <li>Relatório de Beneficiários não-apadrinhados;</li>
+    <li>Relatório financeiro por beneficiário apadrinhado;</li>
+    <li>Relatório de apadrinhamento por captadores.</li>
+  </ul>
+
+  <h2 id="contas-a-receber-avulsa">Gestão do Contas a Receber – Oferta Avulsa</h2>
+  <ul>
+    <li>Lançamento de oferta por tipo de pagamento;</li>
+    <li>Lançamento avulso por tipo campanha ou tipo de apadrinhamento;</li>
+    <li>Geração automática de boleto (convênio IDeveloper);</li>
+    <li>Baixa de Recebimentos (automático pelo convênio IDeveloper ou manual);</li>
+    <li>Controle de Recebimentos por forma de pagamento (em dinheiro, cartão crédito ou débito);</li>
+    <li>Controle de entradas por campanha.</li>
+  </ul>
+
+  <h2 id="contas-a-receber-recorrente">Gestão do Contas a Receber Recorrente por projeto</h2>
+  <ul>
+    <li>
+      2 (dois) tipos de recorrência de cobrança: Parcelada e fixa mensal, possibilitando mais flexibilidade na
+      geração das cobranças;
+    </li>
+    <li>
+      Lançamento de colaboração mensal por campanha, podendo ter mais de uma campanha por cobrança, possibilitando
+      economia à instituição;
+    </li>
+    <li>Geração de contas a receber mensal a partir do lançamento;</li>
+    <li>Geração automática de boleto (convênio IDeveloper/iugu);</li>
+    <li>Baixa automática dos Recebimentos (convênio IDeveloper/iugu);</li>
+    <li>Baixa manual para demais convênios;</li>
+    <li>Cancelamento de cobrança;</li>
+    <li>Controle de Recebimentos por forma de pagamento (em dinheiro, cartão débito, crédito e etc);</li>
+    <li>Controle de recebimentos por conta corrente/convênio.</li>
+  </ul>
+
+  <h2 id="contas-a-pagar">Gestão do Contas a Pagar</h2>
+  <ul>
+    <li>Registro do Contas a Pagar;</li>
+    <li>Baixa dos registros Liquidados;</li>
+    <li>Controle de Contas a Pagar Liquidadas no Período;</li>
+    <li>Relatório de Duplicatas em Aberto (Vencidas e a Vencer);</li>
+    <li>Relatórios Agrupados por Data de Vencimento, Grupo de Despesa, entre outros;</li>
+    <li>Relatório de Contas a pagar por Centro de Custo.</li>
+  </ul>
+
+  <h3>Gestão de aprovação de pagamento – Contas a Pagar</h3>
+  <ul>
+    <li>Gestão de Aprovação de Pagamento;</li>
+    <li>Definição dos responsáveis pelas aprovações por centro de custo;</li>
+    <li>Aprovação automática;</li>
+    <li>Tela rápida de aprovação/Recusa.</li>
+  </ul>
+
+  <h2 id="relatorios-financeiros">Gestão do Contas a Receber – Relatórios e Gráficos</h2>
+  <ul>
+    <li>Relatório de Contas a Receber no Período;</li>
+    <li>Relatório de Contas a Receber em Aberto (Vencidas e a Vencer);</li>
+    <li>Relatório de Contas a Receber por Centro de Custo;</li>
+    <li>Relatório de doadores mês a mês;</li>
+    <li>Relatório de doadores que não realizaram doação financeira no período;</li>
+    <li>Relatório de Recebimentos por forma de pagamento (em dinheiro, cartão de crédito ou débito etc.);</li>
+    <li>
+      Relatórios de cadastro personalizados, com opção de escolha dos campos que deseja incluir ou retirar do
+      Relatório e ordenação pelo título dos Relatórios (alguns relatórios podem não ter disponibilizado este recurso
+      devido ao formato do mesmo);
+    </li>
+    <li>Relatório por campanha;</li>
+    <li>Gráfico comparativo de recebidos X a receber X geral;</li>
+    <li>Gráfico comparativo da entrada por apadrinhamento relacionado com os beneficiários da unidade.</li>
+  </ul>
+
+  <h2 id="emails-sms">Disparo de e-mails e SMS automáticos</h2>
+  <ul>
+    <li>Parametrização para envio de boleto automático por e-mail;</li>
+    <li>Parametrização para envio de lembrete de boleto automático por e-mail;</li>
+    <li>Parametrização para envio de boleto de cobrança (para os que não efetuaram o pagamento);</li>
+    <li>
+      Envio, em período parametrizado, do informativo do apadrinhado (necessidade de lançamento das informações por
+      apadrinhado ou geral para o envio. Também depende do módulo de apadrinhamento/em desenvolvimento);
+    </li>
+    <li>Parametrização para envio de SMS automático para aviso de vencimento de boleto</li>
+  </ul>
+  <p>
+    <strong>Obs.: Para utilização do SMS é necessário a compra de pacote de disparo de SMS em quantidade. Consulte a
+    tabela de custos.</strong>
+  </p>
+
+  <h2 id="atendimento-social">Gestão de Atividade e Atendimento Social</h2>
+  <ul>
+    <li>Cadastro do beneficiário com foto via webcam;</li>
+    <li>
+      Lançamento da Matrícula na Organização com:
+      <ul>
+        <li>Retrato social do beneficiário;</li>
+        <li>Registro das atividades sociais;</li>
+        <li>Registro dos projetos;</li>
+        <li>Impressão de documentos relativos a matrícula.</li>
+      </ul>
+    </li>
+    <li>Relatórios relacionados à matrícula e atividade social dos beneficiários;</li>
+    <li>Cadastro do Tipo de Atendimento;</li>
+    <li>Lançamento rápido e objetivo do atendimento;</li>
+    <li>Histórico total do atendido (prontuário social da pessoa atendida);</li>
+    <li>Agendamento para um próximo atendimento;</li>
+    <li>Relatórios dos atendimentos em tempo real;</li>
+    <li>Relatórios dos atendidos em tempo real.</li>
+  </ul>
+
+  <h2 id="atas">Gestão de ata</h2>
+  <ul>
+    <li>Cadastro e Emissão das atas;</li>
+    <li>Busca dinâmica de informações em atas anteriores;</li>
+    <li>Registro das reuniões;</li>
+    <li>Controle de tarefas relativas a ata;</li>
+    <li>Notificações de lembrete por e-mail para os envolvidos nas tarefas relacionadas</li>
+  </ul>
+
+  <h2 id="inscricoes">Gestão de Inscrições</h2>
+  <ul>
+    <li>Divulgação do seu curso ou evento</li>
+    <li>Pagamento fácil e seguro</li>
+    <li>Gestão e controle dos eventos</li>
+    <li>Formulários flexíveis de cadastro</li>
+    <li>Comunicação com os participantes</li>
+    <li>Integração com mídias sociais</li>
+    <li>Relatório de eventos</li>
+    <li>Relatório de inscritos</li>
+    <li>Hotsite do evento</li>
+  </ul>
+
+  <h3>Recursos disponíveis no hotsite evento/curso</h3>
+  <ul>
+    <li>Local;</li>
+    <li>Preço – Podendo ser criada diversas faixas de preços;</li>
+    <li>Palestrantes;</li>
+    <li>Salas;</li>
+    <li>Programação;</li>
+    <li>Criação de grade da programação, podendo separar as programações em salas diferentes;</li>
+    <li>Patrocinadores;</li>
+    <li>Listagem dos patrocinadores, podendo separá-los em grupos;</li>
+    <li>Seção;</li>
+    <li>Pode criar seções com assuntos ou temas diversos;</li>
+    <li>Dúvidas.</li>
+  </ul>
+
+  <h2 id="formularios-voluntarios">
+    Formulário para captação de voluntários e base de conhecimento para doador e beneficiários
+  </h2>
+  <ul>
+    <li>
+      <ul>
+        <li>Criação de formulários personalizados para captação de cadastro de voluntário, doador e beneficiário</li>
+        <li>Criação de campos personalizados de acordo com o desejado</li>
+        <li>Possibilidade de criação de vários formulários de captação diferentes</li>
+      </ul>
+    </li>
+    <li>Relatório de cadastros realizados nos formulários com diversos filtros</li>
+    <li>Integração com portal do doador e portal do beneficiário</li>
+  </ul>
+
+  <h2 id="relacionamento-doador">Relacionamento com o doador</h2>
+  <ul>
+    <li>Registros de acompanhamento histórico de pessoa (doador);</li>
+    <li>Possibilidade de registro de data de “novo contato”;</li>
+    <li>Controle de status do acompanhamento (pendente, concluído);</li>
+    <li>Controle de acompanhamento histórico de pessoa por status e datas;</li>
+    <li>Relatórios de Registro de acompanhamento histórico de pessoa com diversos filtros;</li>
+    <li>Registro de notícias para o Portal do Doador;</li>
+    <li>Relatório de contatos/acompanhamento.</li>
+  </ul>
+
+  <h2 id="indicadores">Indicadores (novo)</h2>
+  <p>
+    Este módulo vai reunir recursos de indicadores para os diversos módulos disponíveis na plataforma, buscando
+    trazer uma tratamento e consolidação de dados que possam ajudar nas analises e tomada de decisões.
+  </p>
+  <p>Alguns dos indicadores lançados:</p>
+  <ul>
+    <li>
+      Ranking de doadores/associados – Mostra o ranking relacionado a todas as cobranças pagas no período
+      selecionado;
+    </li>
+    <li>
+      Histórico de pessoa na organização – Vai mostrar todo o histórico da pessoa lançado na plataforma, dando uma
+      base completa de todo o histórico da pessoa na organização;
+    </li>
+    <li>
+      Indicadores sociais – Trará indicadores relacionados aos beneficiários e atividades sociais promovidas pela
+      organização.
+    </li>
+  </ul>
+
+  <h2 id="anexo-2-adicionais">ANEXO 2 – Descrição detalhada das contratações adicionais</h2>
+  <p><strong>*As contratações adicionais são opcionais</strong></p>
+
+  <h2 id="portal-doador">Módulo do Portal do Doador/Associado</h2>
+  <p>
+    O portal do doador/associado é um acesso exclusivo para o doador/associado, permitindo e aumentando a interação
+    entre os doadores/associados e a organização.
+  </p>
+
+  <h3>Admin do portal (doador/associado)</h3>
+  <ul>
+    <li>Possibilidade de personalização na página do portal</li>
+    <li>Recurso de disparo de acesso, usuário e senha para os doadores/associados</li>
+    <li>Cadastro de notícias para o portal</li>
+    <li>Cadastro de avisos para o portal</li>
+    <li>Cadastro do calendário da organização para o portal</li>
+    <li>Possibilidade de inserção de documentos para que fiquem disponíveis no portal(com limite de inclusão)</li>
+  </ul>
+
+  <h3>Portal de acesso do doador/associado</h3>
+  <ul>
+    <li>Acesso às cobranças a pagar pelo doador/associado;</li>
+    <li>Acesso às cobranças pagas pelo doador/associado;</li>
+    <li>Acesso a todas as notificações realizadas pelo sistema;</li>
+    <li>Acesso aos projetos de recorrência aderidos.</li>
+    <li>Acesso aos beneficiários atendidos pelo apadrinhamento/adoção missionária (depende do módulo de apadrinhamento);</li>
+    <li>Atualização Cadastral do doador.</li>
+    <li>Acesso a notícias</li>
+    <li>Acesso ao calendário de eventos</li>
+    <li>Cadastro da base de conhecimento do doador;(precisa da contratação do módulo da base de conhecimento)</li>
+    <li>Lembrete/gerador de senha</li>
+  </ul>
+
+  <h2 id="portal-beneficiario">
+    Módulo do Portal Beneficiário (pode ser o missionário, o atendido, entre outros que são beneficiários da
+    organização)
+  </h2>
+  <p>
+    Portal onde o beneficiário poderá ter acesso e interagir com a organização e ter acessos para auxiliá-lo na
+    captação de recursos, diminuição da inadimplência relacionados a seus doadores e interação com a organização e
+    seus doadores.(Este portal é interligado com o Módulo de Apadrinhamento/Adoção Missionária)
+  </p>
+
+  <h3>Admin do portal (beneficiário)</h3>
+  <ul>
+    <li>Possibilidade de personalização na página</li>
+    <li>Cadastro de notícias</li>
+    <li>Cadastro de avisos</li>
+    <li>Cadastro do calendário da organização</li>
+    <li>Possibilidade de inserção de documentos para que fiquem disponíveis no portal(com limite de inclusão)</li>
+  </ul>
+
+  <h3>Portal de acesso do beneficiário/missionário</h3>
+  <ul>
+    <li>Alteração cadastral geral e da base de conhecimento relacionado.</li>
+    <li>Acesso às cobranças a pagar relacionadas ao beneficiário.;</li>
+    <li>Acesso às cobranças pagas relacionadas ao beneficiário.;</li>
+    <li>Cadastro da base de conhecimento do beneficiário;(precisa da contratação do módulo da base de conhecimento)</li>
+    <li>Acesso a notícias</li>
+    <li>Acesso ao calendário de eventos</li>
+  </ul>
+
+  <h2 id="dominio-personalizado">Domínio Personalizado</h2>
+  <p>
+    Este recurso vai proporcionar ao nosso cliente utilizar um domínio ou subdomínio personalizado para o uso da
+    plataforma, de uma página de captação de recursos ou uma página de inscrições para cursos ou eventos.
+  </p>
+
+  <h2 id="email-exclusivo">Email Exclusivo</h2>
+  <p>
+    Este recurso vai proporcionar ao nosso cliente ter uma conta de disparo dos email exclusivo de um email
+    personalizado de seu próprio domínio, desta forma poderão receber também a resposta dos email, trazendo mais
+    facilidade de contato e interação com os doadores.
+  </p>
+
+  <h2 id="whatsapp-notificacoes">Pacote de disparos de notificação via WhatsApp</h2>
+  <p>
+    <strong>Fidelize seu doador e diminua a inadimplência mandando suas notificações financeiras via WhatsApp</strong>
+  </p>
+  <ul>
+    <li>Potencialize sua captação de recursos</li>
+    <li>Melhore a satisfação do seus doadores</li>
+    <li>Reduza a inadimplência de seus doadores e inscritos</li>
+  </ul>
+
+  <h3>Vantagens</h3>
+  <ul>
+    <li>WhatsApp Oficial (Somos um provedor licenciado do WhatsApp)</li>
+    <li>Sem banimento de número</li>
+    <li>Envio de notificações ativas em larga escala</li>
+    <li>Tenha seu número personalizado com seu logo</li>
+    <li>Atenda seu contato de qualquer computador, sem precisar estar com seu celular ligado e com internet</li>
+  </ul>
+
+  <p>
+    <strong
+      >Valor do setup de integração, criação e configuração do numero do whatsapp integrado ao transforme.tech:
+      *Consultar</strong
+    >
+  </p>
+  <p>
+    *A cobrança do setup de integração é necessária para realizar a criação e configuração do número do WhatsApp
+    para o uso em disparos de notificação via plataforma.O número não pode já ter sido usado no whatsapp.
+  </p>
+</Documento>

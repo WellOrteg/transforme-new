@@ -1,0 +1,54 @@
+---
+import FormContato from '../form/FormContato.astro';
+import IconeRede from '../layout/IconeRede.astro';
+import { linkWhatsApp } from '../../dados/contato';
+
+// O §14 do roteiro. Sai o "cadastre-se que logo entraremos em contato" e entra
+// uma proposta concreta, com o custo dela declarado — vinte minutos, sem
+// compromisso. É o que o documento chama de reduzir a fricção do último passo.
+//
+// O CTA secundário leva o foco para o primeiro campo do formulário, e não para a
+// seção: quem clicou já quer escrever. Ele fica sem o símbolo do WhatsApp de
+// propósito — o desenho é reservado aos links que abrem a conversa de verdade.
+---
+
+<section id="contato" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto grid max-w-6xl gap-10 px-6 md:gap-12 py-12 md:py-24 md:grid-cols-2">
+    <div>
+      <h2 data-revela class="text-[clamp(2rem,4vw,3.25rem)]">Pronto para dar o próximo passo?</h2>
+
+      <p data-revela class="mt-4 max-w-md text-lg text-[var(--texto-suave)]">
+        Vamos entender a realidade da sua organização e mostrar quais soluções da transforme.tech
+        podem fazer sentido para vocês.
+      </p>
+
+      <div data-revela class="mt-8 flex flex-wrap items-center gap-4">
+        <a
+          href={linkWhatsApp()}
+          data-acao
+          class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-[var(--acento-texto)]"
+          style="background: var(--acento-superficie)"
+        >
+          <IconeRede id="whatsapp" class="h-5 w-5 shrink-0" />
+          Falar com um especialista no WhatsApp
+        </a>
+        <a
+          href="#contato-nome"
+          data-link
+          class="text-sm font-semibold text-[var(--acento)]"
+        >
+          Quero solicitar uma apresentação
+        </a>
+      </div>
+
+      <p data-revela class="mt-6 text-sm text-[var(--texto-suave)]">
+        Sem compromisso. Uma conversa de 20 minutos para entender seu cenário.
+      </p>
+    </div>
+
+    <div data-revela>
+      <h3 class="mb-6 text-xl leading-snug">Quer receber uma apresentação da transforme.tech?</h3>
+      <FormContato />
+    </div>
+  </div>
+</section>

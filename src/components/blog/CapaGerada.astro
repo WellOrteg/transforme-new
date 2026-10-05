@@ -1,0 +1,24 @@
+---
+import Grafismo from '../marca/Grafismo.astro';
+
+interface Props {
+  categoria: string;
+  class?: string;
+}
+const { categoria, class: classe } = Astro.props;
+
+const gradientes: Record<string, string> = {
+  Tecnologia: 'linear-gradient(135deg, #8C73FF, #693ECC)',
+  Pessoas: 'linear-gradient(135deg, #A992FF, #7F56DA)',
+  Transformação: 'linear-gradient(135deg, #0B0A60, #693ECC)',
+  'Conheça a plataforma': 'linear-gradient(135deg, #693ECC, #05032C)',
+};
+---
+
+<div
+  class:list={['relative overflow-hidden text-white', classe]}
+  style={`background:${gradientes[categoria] ?? gradientes['Tecnologia']}`}
+  aria-hidden="true"
+>
+  <Grafismo class="-bottom-16 -right-8 w-32" opacidade={0.24} />
+</div>

@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { depoimentos } from '../../dados/depoimentos';
+
+import renatoRibeiro from '../../assets/site/retrato-renato-ribeiro.jpg';
+import rodrigoGomes from '../../assets/site/retrato-rodrigo-gomes.jpg';
+import daniMarcal from '../../assets/site/retrato-dani-marcal.jpg';
+import marciaKopanyshyn from '../../assets/site/retrato-marcia-kopanyshyn.jpg';
+import newtonMarques from '../../assets/site/retrato-newton-marques.jpg';
+import carolinaChueire from '../../assets/site/retrato-carolina-chueire.jpg';
+
+// Os retratos são importados um a um, e não por glob, para o build quebrar na
+// hora se alguém acrescentar um depoimento sem trazer a foto.
+const retratos: Record<string, ImageMetadata> = {
+  'renato-ribeiro': renatoRibeiro,
+  'rodrigo-gomes': rodrigoGomes,
+  'dani-marcal': daniMarcal,
+  'marcia-kopanyshyn': marciaKopanyshyn,
+  'newton-marques': newtonMarques,
+  'carolina-chueire': carolinaChueire,
+};
+
+// Em 09/09/2026 o dono pediu os depoimentos escritos "passando, ocupando apenas
+// um bloco e mais clean". Eram seis cartões em duas fileiras (três em destaque,
+// três menores); agora são as seis citações empilhadas na MESMA célula da
+// grade, revezando-se por CSS (ver `[data-depoimentos]` em movimento.css).
+//
+// A ORDEM abre com as três personas do §12 do roteiro — diretor de organização
+// missionária, responsável financeiro, diretor de ONG/OSC — e só depois vêm as
+// demais. Era isso que os três cartões de destaque diziam; sem eles, a ordem é
+// o que restou dessa intenção editorial.
+//
+// Quem pede menos movimento (e quem não tem o CSS) recebe as seis empilhadas em
+// coluna, todas visíveis: nada de conteúdo depende da animação para aparecer.
+// Os três reels que o dono mandou em 09/09/2026, com a mesma receita do vídeo
+// da Casa de Nazaré: a frase de abertura por escrito, para alguém querer
+// apertar o play.
+//
+// Nos vídeos do Jader e da Eliana a primeira frase é só a apresentação ("o meu
+// nome é..."), que não convida ninguém — o nome e a organização já aparecem
+// embaixo do vídeo. Então a frase citada é a primeira de conteúdo de cada um.
+// Todas foram lidas da legenda queimada no próprio reel.
+//
+// O documento rotulava os três como ONG/OSC | MISSÕES | FUNDAÇÃO, mas os três
+// são organizações missionárias — o rótulo viraria etiqueta errada. Cada um
+// aparece com quem é e de onde é.
+const videos = [
+  {
+    arquivo: 'depoimento-agencia-wesleyana',
+    frase: '“…e já há vários anos usamos o transforme.tech, é uma ferramenta fantástica!”',
+    autor: 'Gilliardi Tolentino',
+    organizacao: 'Agência Missionária Wesleyana',
+  },
+  {
+    arquivo: 'depoimento-missao-evangelica-base',
+    frase: '“Nem todos têm a cultura de checar e-mails, e o WhatsApp facilitou muito.”',
+    autor: 'Jader',
+    organizacao: 'Missão Evangélica Base',
+  },
+  {
+    arquivo: 'depoimento-missao-crista-mundial',
+    frase: '“O nosso desejo era que todo nosso trabalho ficasse junto, no mesmo sistema.”',
+    autor: 'Eliana',
+    organizacao: 'Missão Cristã Mundial',
+  },
+];
+
+const ordemPersonas = ['rodrigo-gomes', 'newton-marques', 'marcia-kopanyshyn'];
+const ordenados = [
+  ...ordemPersonas.map((foto) => depoimentos.find((d) => d.foto === foto)!),
+  ...depoimentos.filter((d) => !ordemPersonas.includes(d.foto)),
+];
+---
+
+<section id="depoimentos" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <h2 data-revela class="text-center text-[clamp(2rem,4vw,3.25rem)]">
+      Quem transforma com a gente.
+    </h2>
+
+
+    <div data-revela-grupo class="mt-8 md:mt-12 grid gap-8 md:grid-cols-3">
+      {videos.map((v) => (
+        <figure data-video-depoimento class="m-0">
+          <video
+            src={`/video/${v.arquivo}.mp4`}
+            poster={`/video/${v.arquivo}-capa.webp`}
+            width="540"
+            height="960"
+            controls
+            playsinline
+            preload="none"
+            class="h-auto w-full rounded-2xl border border-[var(--borda)]"
+          ></video>
+
+          <figcaption class="mt-4">
+            <blockquote class="m-0 text-[var(--texto-forte)]">{v.frase}</blockquote>
+            <p class="mt-3 text-sm text-[var(--texto-suave)]">
+              <b class="font-semibold text-[var(--texto-forte)]">{v.autor}</b> · {v.organizacao}
+            </p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div data-depoimentos data-revela class="mx-auto mt-10 md:mt-14 md:mt-20 grid max-w-3xl gap-12">
+      {ordenados.map((d, i) => (
+        <figure style={`--i:${i}`} class="m-0 flex flex-col items-center text-center">
+          <blockquote class="text-xl leading-relaxed text-[var(--texto-forte)]">{d.texto}</blockquote>
+
+          <figcaption class="mt-6 flex items-center gap-4 text-sm text-[var(--texto-suave)]">
+            <Image
+              src={retratos[d.foto]}
+              alt=""
+              width={112}
+              height={112}
+              loading="lazy"
+              class="h-14 w-14 shrink-0 rounded-full object-cover"
+            />
+            <span class="text-left">
+              <b class="block font-semibold text-[var(--texto-forte)]">{d.autor}</b>
+              {d.organizacao}
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

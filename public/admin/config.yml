@@ -1,0 +1,42 @@
+# Os `options` de autor e categoria precisam bater exatamente com os `enum` de
+# src/content.config.ts. tests/e2e/admin.spec.ts falha quando um lado muda sozinho.
+backend:
+  name: github
+  repo: WellOrteg/transforme-new
+  branch: main
+  base_url: https://transforme-cms-auth.SEU-SUBDOMINIO.workers.dev
+
+# Só tem efeito quando o site roda em localhost. Em produção o Sveltia ignora
+# esta chave e usa o login do GitHub normalmente.
+local_backend: true
+
+media_folder: src/assets/blog
+public_folder: ~/assets/blog
+
+locale: pt
+
+collections:
+  - name: blog
+    label: Posts do blog
+    label_singular: Post
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: yaml-frontmatter
+    fields:
+      - { name: titulo, label: Título, widget: string, pattern: ['^.{1,90}$', 'Máximo de 90 caracteres'] }
+      - { name: resumo, label: Resumo, widget: text, hint: 'Entre 60 e 200 caracteres. Aparece no card e no Google.' }
+      - { name: data, label: Data de publicação, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, picker_utc: false }
+      - name: autor
+        label: Autor
+        widget: select
+        options: ['transforme', 'André Kind', 'Emerson Santiago', 'Wesley Cavalheiro', 'Rafael Bandeira']
+      - name: categoria
+        label: Categoria
+        widget: select
+        options: ['Tecnologia', 'Pessoas', 'Transformação', 'Conheça a plataforma']
+      - { name: capa, label: Imagem de capa, widget: image, required: false }
+      - { name: capaAlt, label: Descrição da imagem, widget: string, required: false, hint: 'Obrigatório se houver capa. Descreve a imagem para quem não enxerga.' }
+      - { name: rascunho, label: Rascunho, widget: boolean, default: false, hint: 'Rascunho não aparece no site.' }
+      - { name: body, label: Conteúdo, widget: markdown }

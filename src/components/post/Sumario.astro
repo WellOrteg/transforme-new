@@ -1,0 +1,55 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+interface Props {
+  headings: Heading[];
+  titulo?: string;
+  idPrefix?: string;
+}
+const { headings, titulo = 'Neste artigo', idPrefix = '' } = Astro.props;
+const itens = headings.filter((h) => h.depth === 2);
+const idTitulo = `${idPrefix}titulo-sumario`;
+---
+
+{itens.length > 0 && (
+  <nav data-sumario aria-labelledby={idTitulo}>
+    <h2 id={idTitulo} class="mb-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--texto-forte)]">
+      {titulo}
+    </h2>
+    <ul class="space-y-1 border-l-2 border-[var(--borda)] text-sm">
+      {itens.map((h) => (
+        <li>
+          <a
+            href={`#${h.slug}`}
+            data-item-sumario={h.slug}
+            class="block py-1 pl-3 text-[var(--texto-suave)] transition hover:text-[var(--acento)] aria-[current=true]:font-semibold aria-[current=true]:text-[var(--acento)]"
+          >
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<script>
+  const alvos = document.querySelectorAll('article h2[id]');
+  const links = document.querySelectorAll('[data-item-sumario]');
+  if (alvos.length && links.length) {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue;
+          links.forEach((l) =>
+            l.setAttribute('aria-current', String(l.getAttribute('data-item-sumario') === e.target.id)),
+          );
+        }
+      },
+      { rootMargin: '-10% 0px -80% 0px' },
+    );
+    alvos.forEach((a) => observador.observe(a));
+  }
+</script>

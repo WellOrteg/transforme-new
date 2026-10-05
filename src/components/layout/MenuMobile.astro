@@ -1,0 +1,35 @@
+---
+import IconeRede from './IconeRede.astro';
+
+interface Props {
+  links: { href: string; rotulo: string }[];
+  zap: string;
+}
+const { links, zap } = Astro.props;
+---
+
+<details class="min-[1145px]:hidden" name="menu">
+  <summary
+    class="cursor-pointer list-none p-2 text-[var(--texto-forte)]"
+    aria-label="Abrir menu de navegação"
+  >
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"></path>
+    </svg>
+  </summary>
+  <nav aria-label="Principal (mobile)" class="absolute inset-x-0 top-full bg-[var(--superficie)] p-6">
+    <ul class="flex flex-col gap-4">
+      {links.map((l) => (
+        <li><a href={l.href} class="text-[var(--texto-forte)]">{l.rotulo}</a></li>
+      ))}
+    </ul>
+    <a
+      href={zap}
+      class="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-[var(--acento-texto)]"
+      style="background: var(--acento-superficie)"
+    >
+      <IconeRede id="whatsapp" class="h-5 w-5 shrink-0" />
+      Falar com um especialista
+    </a>
+  </nav>
+</details>

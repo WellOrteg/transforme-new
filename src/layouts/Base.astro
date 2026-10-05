@@ -1,0 +1,114 @@
+---
+import '../styles/tokens.css';
+import Cabecalho from '../components/layout/Cabecalho.astro';
+import Rodape from '../components/layout/Rodape.astro';
+import BotaoWhatsApp from '../components/layout/BotaoWhatsApp.astro';
+
+interface Props {
+  titulo: string;
+  descricao: string;
+  imagemOg?: string;
+  tipo?: 'website' | 'article';
+}
+const { titulo, descricao, imagemOg = '/og-padrao.png', tipo = 'website' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google Tag Manager -->
+    <script is:inline>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-KMLNNWVZ');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Meta Pixel Code -->
+    <script is:inline>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '615518767986341');
+      fbq('track', 'PageView');
+    </script>
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display:none"
+        src="https://www.facebook.com/tr?id=615518767986341&ev=PageView&noscript=1"
+      /></noscript
+    >
+    <!-- End Meta Pixel Code -->
+
+    <title>{titulo}</title>
+    <meta name="description" content={descricao} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="preload" href="/fonts/NeueMachina-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={tipo} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(imagemOg, Astro.site).href} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-KMLNNWVZ"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
+    <!-- End Google Tag Manager (noscript) -->
+
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4">
+      Pular para o conteúdo
+    </a>
+    <Cabecalho />
+    <div>
+      <!-- O botão fica fora de <main>: tests/e2e/institucionais.spec.ts exige
+           que /suporte/ não ofereça o WhatsApp comercial dentro do conteúdo
+           principal, que ali é só o de suporte. Este invólucro é o que dá ao
+           `position: sticky` do botão o limite certo — ver o comentário em
+           BotaoWhatsApp.astro. -->
+      <main id="conteudo">
+        <slot />
+      </main>
+      <BotaoWhatsApp />
+    </div>
+    <Rodape />
+  </body>
+</html>

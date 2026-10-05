@@ -1,0 +1,52 @@
+---
+// O item 14 do documento "alterações para o novo site" (09/09/2026) pede um
+// vídeo de cliente real aqui, entre o que a plataforma faz e como a empresa
+// trabalha — e pede a primeira frase do vídeo por escrito ao lado, "para chamar
+// o interesse da pessoa dar o play".
+//
+// A frase abaixo é a abertura do próprio vídeo, transcrita da legenda queimada
+// nele. O resultado é o que a Casa de Nazaré publicou na legenda do reel: de
+// R$ 600 no ano para R$ 7.000 no mês em cinco meses.
+//
+// O arquivo veio do Instagram com 18 MB (720×1280, 89s). Aqui ele está em
+// 540×960 e 7,6 MB, com `-movflags +faststart` para começar a tocar antes de
+// terminar de baixar. `preload="none"` significa que esses megabytes só saem do
+// servidor depois do play: quem passa a rolagem por aqui baixa a capa, 50 KB.
+//
+// Sem `autoplay`: é depoimento falado, quem decide ouvir é quem assiste. As
+// legendas são parte da imagem — vieram queimadas do reel original.
+---
+
+<section id="video-cliente" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto grid max-w-6xl gap-10 px-6 md:gap-12 py-12 md:py-24 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+    <div>
+      <h2 data-revela class="text-[clamp(2rem,4vw,3.25rem)]">Veja o que mudou para quem usa.</h2>
+
+      <blockquote
+        data-revela
+        class="mt-8 border-l-2 border-[var(--acento)] pl-5 text-[clamp(1.25rem,2.4vw,1.75rem)] leading-snug text-[var(--texto-forte)]"
+      >
+        “Nós começamos em dezembro com R$ 500 ou R$ 600. Esse mês a gente vai fechar com
+        R$ 7.000.”
+      </blockquote>
+
+      <p data-revela class="mt-6 text-lg text-[var(--texto-suave)]">
+        Casa de Nazaré, de Maringá — cinco meses depois de começar a receber doações online pela
+        transforme.tech.
+      </p>
+    </div>
+
+    <div data-revela class="mx-auto w-full max-w-[340px]">
+      <video
+        src="/video/depoimento-casa-de-nazare.mp4"
+        poster="/video/depoimento-casa-de-nazare-capa.webp"
+        width="540"
+        height="960"
+        controls
+        playsinline
+        preload="none"
+        class="h-auto w-full rounded-2xl border border-[var(--borda)]"
+      ></video>
+    </div>
+  </div>
+</section>

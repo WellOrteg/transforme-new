@@ -1,0 +1,34 @@
+---
+import GaleriaTelas from './GaleriaTelas.astro';
+import Grafismo from '../marca/Grafismo.astro';
+
+// O §9 do roteiro. É a segunda e última faixa escura da home: uma terceira
+// roubaria o peso desta e do hero.
+//
+// Os três números que ficavam aqui foram para a seção Números, onde o roteiro os
+// põe junto do argumento dos dez anos.
+---
+
+<section data-tema="escuro" id="produto" class="relative overflow-clip bg-[var(--superficie)]">
+  <div
+    class="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px]"
+    style="background: radial-gradient(circle, rgb(140 115 255 / 0.4) 0%, rgb(140 115 255 / 0) 62%)"
+    aria-hidden="true"
+  ></div>
+  <Grafismo class="-right-20 -bottom-40 w-[320px] text-[var(--color-roxo-400)]" opacidade={0.12} />
+
+  <div class="relative mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <p data-revela class="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--acento)]">
+      A plataforma
+    </p>
+    <h2 data-revela class="text-[clamp(2rem,4vw,3.25rem)] text-[var(--texto-forte)]">Tudo num painel só.</h2>
+    <p data-revela class="mt-4 max-w-2xl text-lg text-[var(--texto-suave)]">
+      Captação, doadores, financeiro e impacto em tempo real — sem planilhas paralelas e sem
+      retrabalho.
+    </p>
+
+    <div data-revela class="mt-8 md:mt-12">
+      <GaleriaTelas />
+    </div>
+  </div>
+</section>

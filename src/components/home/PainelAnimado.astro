@@ -1,0 +1,166 @@
+---
+// A plataforma em movimento, desenhada: notebook e celular com o painel rolando,
+// barras respirando e a rosca se fechando, em laço contínuo.
+//
+// É desenho, não captura — a tela real está no vídeo do topo da página. Por isso
+// nada aqui finge ser texto do sistema: são blocos, barras e proporções, na
+// paleta do painel de verdade. Vetor em vez de vídeo porque a faixa tem um brilho
+// roxo por baixo: um retângulo opaco recortaria um bloco escuro nele.
+//
+// Sem JavaScript. O laço mora em movimento.css e volta ao ponto de partida no
+// fim, então quem pede menos movimento (que corta a animação no primeiro quadro)
+// fica com o painel montado e parado, não com ele torto no meio do caminho.
+const TELA = 'rgb(255 255 255 / 0.05)';
+const BORDA = 'rgb(255 255 255 / 0.09)';
+
+// Alturas em pares pago/não pago, como no gráfico de fluxo do painel.
+const barras = [
+  { h: 26, cor: 'var(--color-roxo-400)' },
+  { h: 40, cor: '#E8792B' },
+  { h: 18, cor: 'var(--color-roxo-400)' },
+  { h: 52, cor: '#E8792B' },
+  { h: 34, cor: 'var(--color-roxo-400)' },
+  { h: 61, cor: '#E8792B' },
+  { h: 45, cor: '#2FAE6A' },
+];
+
+const linhas = [64, 132, 96, 158, 112];
+const cartoes = [
+  { cor: '#4C7DF0', n: 96 },
+  { cor: '#2FAE6A', n: 74 },
+  { cor: '#E8792B', n: 58 },
+];
+---
+
+<svg
+  viewBox="0 0 560 372"
+  class="h-auto w-full"
+  fill="none"
+  aria-hidden="true"
+  data-painel-animado
+>
+  <defs>
+    <clipPath id="pa-tela-note"><rect x="24" y="18" width="384" height="232" rx="6" /></clipPath>
+    <clipPath id="pa-tela-fone"><rect x="406" y="74" width="130" height="266" rx="18" /></clipPath>
+    <linearGradient id="pa-metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D8D9E4" />
+      <stop offset="1" stop-color="#8E90A6" />
+    </linearGradient>
+  </defs>
+
+  {/* Notebook */}
+  <rect x="14" y="8" width="404" height="252" rx="12" fill="#0A0830" stroke="rgb(255 255 255 / 0.16)" />
+  <rect x="24" y="18" width="384" height="232" rx="6" fill="#100C3C" />
+  <circle cx="216" cy="13" r="2" fill="rgb(255 255 255 / 0.35)" />
+  <rect x="0" y="264" width="432" height="12" rx="6" fill="url(#pa-metal)" />
+  <rect x="188" y="264" width="56" height="5" rx="2.5" fill="rgb(0 0 0 / 0.28)" />
+
+  <g clip-path="url(#pa-tela-note)">
+    <g data-rola style="--desl:126">
+      {/* Três indicadores */}
+      {[34, 164, 294].map((x) => (
+        <g>
+          <rect x={x} y={48} width={120} height={44} rx={8} fill={TELA} stroke={BORDA} />
+          <rect x={x + 12} y={58} width={44} height={5} rx={2.5} fill="rgb(255 255 255 / 0.22)" />
+          <rect x={x + 12} y={70} width={62} height={10} rx={3} fill="rgb(255 255 255 / 0.6)" />
+        </g>
+      ))}
+
+      {/* Fluxo de doações */}
+      <rect x="34" y="104" width="178" height="96" rx="8" fill={TELA} stroke={BORDA} />
+      <rect x="46" y="116" width="52" height="5" rx="2.5" fill="rgb(255 255 255 / 0.22)" />
+      <g data-viva>
+        {barras.map((b, i) => (
+          <rect
+            x={46 + i * 22}
+            y={188 - b.h}
+            width={13}
+            height={b.h}
+            rx={2.5}
+            fill={b.cor}
+            style={`--i:${i}`}
+          />
+        ))}
+      </g>
+
+      {/* Participação, em rosca */}
+      <rect x="224" y="104" width="178" height="96" rx="8" fill={TELA} stroke={BORDA} />
+      <circle cx="272" cy="152" r="27" stroke="rgb(255 255 255 / 0.1)" stroke-width="11" />
+      <circle
+        data-rosca
+        cx="272"
+        cy="152"
+        r="27"
+        stroke="#E8548A"
+        stroke-width="11"
+        stroke-linecap="round"
+        transform="rotate(-90 272 152)"
+        style="--volta:120"
+      />
+      {[0, 1].map((i) => (
+        <g>
+          <circle cx={318} cy={140 + i * 18} r={4} fill={i ? 'var(--color-roxo-400)' : '#E8548A'} />
+          <rect x={330} y={137 + i * 18} width={54 - i * 16} height={5} rx={2.5} fill="rgb(255 255 255 / 0.2)" />
+        </g>
+      ))}
+
+      {/* Atendimentos por projeto */}
+      <rect x="34" y="212" width="368" height="122" rx="8" fill={TELA} stroke={BORDA} />
+      <rect x="46" y="224" width="66" height="5" rx="2.5" fill="rgb(255 255 255 / 0.22)" />
+      {linhas.map((largura, i) => (
+        <g>
+          <rect x={46} y={244 + i * 18} width={72} height={6} rx={3} fill="rgb(255 255 255 / 0.14)" />
+          <rect
+            data-preenche
+            x={130}
+            y={244 + i * 18}
+            width={largura}
+            height={6}
+            rx={3}
+            fill="#4C7DF0"
+            style={`--i:${i}`}
+          />
+        </g>
+      ))}
+
+      {/* O que aparece quando o painel rola */}
+      <rect x="34" y="346" width="368" height="86" rx="8" fill={TELA} stroke={BORDA} />
+      <rect x="46" y="358" width="88" height="5" rx="2.5" fill="rgb(255 255 255 / 0.22)" />
+      {[0, 1, 2].map((i) => (
+        <rect x={46} y={376 + i * 16} width={330 - i * 54} height={6} rx={3} fill="rgb(255 255 255 / 0.12)" />
+      ))}
+    </g>
+
+    {/* Barra de topo, pintada por último: o conteúdo rola por baixo dela. */}
+    <rect x="24" y="18" width="384" height="20" fill="#151046" />
+    <circle cx="36" cy="28" r="2.5" fill="var(--color-roxo-400)" />
+    <circle cx="46" cy="28" r="2.5" fill="rgb(255 255 255 / 0.25)" />
+    <rect x="360" y="24" width="36" height="8" rx="4" fill="rgb(255 255 255 / 0.16)" />
+  </g>
+
+  {/* Celular */}
+  <rect x="396" y="64" width="150" height="286" rx="26" fill="#07051F" stroke="rgb(255 255 255 / 0.2)" />
+  <rect x="406" y="74" width="130" height="266" rx="18" fill="#100C3C" />
+  <rect x="546" y="140" width="3" height="34" rx="1.5" fill="rgb(255 255 255 / 0.18)" />
+
+  <g clip-path="url(#pa-tela-fone)">
+    <g data-rola style="--desl:72">
+      <rect x="418" y="100" width="70" height="6" rx="3" fill="rgb(255 255 255 / 0.5)" />
+      <rect x="418" y="112" width="46" height="5" rx="2.5" fill="rgb(255 255 255 / 0.2)" />
+
+      {cartoes.map((c, i) => (
+        <g>
+          <rect x={416} y={130 + i * 74} width={110} height={62} rx={10} fill={TELA} stroke={BORDA} />
+          <rect x={428} y={144 + i * 74} width={52} height={5} rx={2.5} fill="rgb(255 255 255 / 0.22)" />
+          <rect x={428} y={158 + i * 74} width={c.n * 0.42} height={11} rx={3} fill="rgb(255 255 255 / 0.65)" />
+          <circle cx={504} cy={158 + i * 74} r={11} fill={c.cor} opacity="0.22" />
+          <circle cx={504} cy={158 + i * 74} r={4} fill={c.cor} />
+        </g>
+      ))}
+    </g>
+
+    {/* O entalhe também fica por cima do que rola. */}
+    <rect x="406" y="74" width="130" height="20" fill="#100C3C" />
+    <rect x="446" y="78" width="50" height="9" rx="4.5" fill="#07051F" />
+  </g>
+</svg>

@@ -1,0 +1,101 @@
+@import "tailwindcss";
+@import "./movimento.css";
+
+@font-face {
+  font-family: 'Neue Machina';
+  src: url('/fonts/NeueMachina-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter Variable';
+  src: url('/fonts/InterVariable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@theme {
+  --color-roxo-300: #A992FF;
+  --color-roxo-400: #8C73FF;
+  --color-roxo-500: #7F56DA;
+  --color-roxo-600: #693ECC;
+  --color-navy-900: #05032C;
+  --color-marca: #0B0A60;
+  --color-cinza-500: #5F5B7A;
+  --color-suave-200: #C8C3E6;
+  --color-off: #F7F7F6;
+
+  --font-display: "Neue Machina", system-ui, sans-serif;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+
+  --ease-suave: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Semânticos — claro é o padrão */
+:root {
+  --superficie: var(--color-off);
+  --texto-forte: var(--color-marca);
+  --texto-suave: var(--color-cinza-500);
+  --acento: var(--color-roxo-600);
+  --acento-superficie: var(--color-roxo-600);
+  --acento-texto: #FFFFFF;
+  --borda: rgb(11 10 96 / 0.14);
+}
+
+/* Faixa escura — decisão de design por seção, não preferência do usuário */
+[data-tema="escuro"] {
+  --superficie: var(--color-navy-900);
+  --texto-forte: #FFFFFF;
+  --texto-suave: var(--color-suave-200);
+  --acento: var(--color-roxo-300);
+  --acento-superficie: linear-gradient(135deg, var(--color-roxo-500), var(--color-roxo-600));
+  --acento-texto: #FFFFFF;
+  --borda: rgb(255 255 255 / 0.14);
+}
+
+html {
+  /* O cabeçalho é fixo no topo; sem isso um link de âncora para por baixo dele. */
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--superficie);
+  color: var(--texto-forte);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400; /* Neue Machina só tem Regular */
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.prose {
+  font-size: 1.1875rem;
+  line-height: 1.75;
+  max-width: 68ch;
+  color: var(--texto-suave);
+}
+.prose h2 {
+  font-size: 1.75rem;
+  color: var(--texto-forte);
+  margin: 2.5rem 0 1rem;
+  scroll-margin-top: 5rem;
+}
+.prose p { margin-bottom: 1.25rem; }
+.prose a { color: var(--acento); text-decoration: underline; }
+.prose img { border-radius: 0.75rem; margin: 2rem 0; }
+.prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }

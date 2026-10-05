@@ -1,0 +1,41 @@
+---
+import Documento from '../layouts/Documento.astro';
+import { WHATSAPP_COMERCIAL } from '../dados/contato';
+
+const canais = [
+  {
+    titulo: 'Tutoriais em vídeo',
+    texto: 'Playlist com o passo a passo das funções mais usadas da plataforma.',
+    rotulo: 'Ver os tutoriais',
+    href: 'https://youtube.com/playlist?list=PLQr5f2Iye7JHx7d10ETaG0rYB6FDOrSLK',
+  },
+  {
+    titulo: 'WhatsApp do suporte',
+    texto: 'Fale com a equipe de atendimento no horário comercial.',
+    rotulo: 'Chamar no WhatsApp',
+    href: `https://wa.me/${WHATSAPP_COMERCIAL}`,
+  },
+  {
+    titulo: 'Abrir um chamado',
+    texto: 'Para solicitações que precisam de acompanhamento formal.',
+    rotulo: 'Abrir chamado',
+    href: 'https://atendimento.transforme.solutions/criar-conta?signature=c8a4abfc797226a3932e5ba6dec03b396fb57485a3441a80e97d59e27399aa5d',
+  },
+];
+---
+
+<Documento titulo="Suporte" descricao="Canais de atendimento da transforme.tech: tutoriais, WhatsApp e abertura de chamados.">
+  <p>Escolha o canal que melhor resolve a sua necessidade.</p>
+
+  <div class="not-prose mt-8 grid gap-4 md:grid-cols-3">
+    {canais.map((c) => (
+      <article class="rounded-2xl border border-[var(--borda)] p-6">
+        <h2 class="text-xl text-[var(--texto-forte)]">{c.titulo}</h2>
+        <p class="mt-2 text-sm text-[var(--texto-suave)]">{c.texto}</p>
+        <a href={c.href} rel="noopener" class="mt-4 inline-block text-sm font-semibold text-[var(--acento)]">
+          {c.rotulo} →
+        </a>
+      </article>
+    ))}
+  </div>
+</Documento>

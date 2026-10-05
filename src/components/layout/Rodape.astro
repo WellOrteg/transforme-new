@@ -1,0 +1,76 @@
+---
+import Logo from '../marca/Logo.astro';
+import FormNewsletter from '../form/FormNewsletter.astro';
+import IconeRede from './IconeRede.astro';
+import { WHATSAPP_COMERCIAL } from '../../dados/contato';
+
+const institucionais = [
+  { href: '/suporte/', rotulo: 'Suporte' },
+  { href: '/termo-de-adesao/', rotulo: 'Termo de adesão' },
+  { href: '/recursos-plataforma/', rotulo: 'Recursos da plataforma' },
+  { href: '/politica-de-privacidade/', rotulo: 'Política de privacidade' },
+];
+
+// Os quatro perfis viram símbolo na tela e continuam com o nome da rede como
+// nome acessível — o `aria-label` abaixo. Sem ele o link ficaria mudo para
+// leitor de tela, porque o desenho é `aria-hidden`.
+const sociais = [
+  { id: 'instagram', href: 'https://instagram.com/transforme.tech', rotulo: 'Instagram' },
+  { id: 'linkedin', href: 'https://linkedin.com/company/transforme-tech', rotulo: 'LinkedIn' },
+  { id: 'facebook', href: 'https://facebook.com/transforme.tech', rotulo: 'Facebook' },
+  { id: 'youtube', href: 'https://www.youtube.com/@transformetech', rotulo: 'YouTube' },
+];
+
+// Os dois números atendem no WhatsApp — o símbolo diz isso antes da pessoa
+// clicar e descobrir para onde o link leva.
+const telefones = [
+  { rotulo: 'Comercial', numero: '+55 (44) 9151-0045', href: `https://wa.me/${WHATSAPP_COMERCIAL}` },
+  { rotulo: 'Suporte', numero: '+55 (44) 9151-0045', href: `https://wa.me/${WHATSAPP_COMERCIAL}` },
+];
+---
+
+<footer data-tema="escuro" class="bg-[var(--superficie)] text-[var(--texto-suave)]" role="contentinfo">
+  <div class="mx-auto grid max-w-6xl gap-10 px-6 py-10 md:py-16 md:grid-cols-4">
+    <div class="md:col-span-2">
+      <Logo class="text-[var(--texto-forte)]" />
+      <p class="mt-4 max-w-xs text-sm">Menos burocracia, mais transformação.</p>
+      <ul class="mt-6 grid gap-2 text-sm">
+        {telefones.map((t) => (
+          <li>
+            {t.rotulo}:{' '}
+            <a class="inline-flex items-center gap-1.5 text-[var(--acento)]" href={t.href} rel="noopener">
+              <IconeRede id="whatsapp" class="h-4 w-4 shrink-0" />
+              {t.numero}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <nav aria-label="Institucional">
+      <h2 class="mb-4 text-sm text-[var(--texto-forte)]">Institucional</h2>
+      <ul class="space-y-2 text-sm">
+        {institucionais.map((l) => <li><a href={l.href} class="hover:text-[var(--texto-forte)]">{l.rotulo}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="mb-4 text-sm text-[var(--texto-forte)]">Receba nossos conteúdos</h2>
+      <FormNewsletter />
+      <ul class="mt-6 flex gap-3">
+        {sociais.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              rel="me noopener"
+              aria-label={s.rotulo}
+              class="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--borda)] transition hover:border-[var(--acento)] hover:text-[var(--texto-forte)]"
+            >
+              <IconeRede id={s.id} class="h-5 w-5" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>

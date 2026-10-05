@@ -1,0 +1,8 @@
+name = "transforme-tech"
+compatibility_date = "2026-08-18"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "transforme-leads"
+database_id = "bd5f388f-5536-421e-97b9-9d2275816b8c"

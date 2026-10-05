@@ -1,0 +1,40 @@
+---
+// Os símbolos das redes e do WhatsApp, no mesmo lugar. Antes o desenho do
+// WhatsApp vivia colado dentro de BotaoWhatsApp.astro e o rodapé escrevia o
+// nome das redes por extenso — agora os cinco pontos de contato do §16 do
+// roteiro apontam para o mesmo arquivo, como já acontece com o número em
+// `dados/contato.ts`.
+//
+// Cada marca é desenhada do jeito que ela é reconhecida: as do WhatsApp,
+// LinkedIn e Facebook são silhuetas preenchidas; as do Instagram e do YouTube
+// são de traço, porque preenchê-las exigiria furos (o quadrado com a lente
+// dentro, o triângulo branco sobre o retângulo) que só funcionam sabendo a cor
+// do fundo. Assim os cinco herdam `currentColor` e servem em faixa clara e
+// escura sem ajuste.
+//
+// O `set:html` recebe só as constantes deste arquivo — nada vem de fora.
+interface Props {
+  id: string;
+  class?: string;
+}
+const { id, class: classe } = Astro.props;
+
+const TRACO = 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"';
+
+const desenhos: Record<string, string> = {
+  whatsapp:
+    '<path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.2c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a12 12 0 0 1-5.6-4.6c-.5-.8-.9-1.7-.9-2.6 0-.9.5-1.4.7-1.6.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.3.5.8 1.2 1.4 1.7.8.7 1.4.9 1.7 1 .2.1.4.1.5-.1l.7-.8c.2-.2.3-.1.5-.1l1.8.9c.2.1.4.2.4.3.1.1.1.5-.1 1.2Z" />',
+  instagram:
+    `<rect x="3" y="3" width="18" height="18" rx="5.2" ${TRACO} /><circle cx="12" cy="12" r="4.1" ${TRACO} /><circle cx="17.3" cy="6.7" r="1.25" />`,
+  linkedin:
+    '<path d="M5 3.4a2.3 2.3 0 1 0 0 4.6 2.3 2.3 0 0 0 0-4.6ZM3.1 9.6h3.8V21H3.1V9.6Zm6.2 0H13v1.6a4 4 0 0 1 3.6-1.9c2.9 0 4.3 1.8 4.3 4.9V21h-3.8v-6c0-1.5-.6-2.4-1.9-2.4-1 0-1.6.6-1.9 1.3-.1.3-.1.6-.1 1V21H9.3V9.6Z" />',
+  facebook:
+    '<path d="M13.4 21.9v-8.2h2.8l.5-3.2h-3.3V8.4c0-.9.3-1.8 1.7-1.8h1.7V3.8a20 20 0 0 0-2.7-.2c-2.8 0-4.6 1.6-4.6 4.5v2.4H6.6v3.2h2.9v8.2h3.9Z" />',
+  youtube:
+    `<rect x="2.2" y="5" width="19.6" height="14" rx="4.2" ${TRACO} /><path d="M10.4 8.9 15.6 12l-5.2 3.1V8.9Z" />`,
+};
+---
+
+<svg class={classe} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <Fragment set:html={desenhos[id]} />
+</svg>

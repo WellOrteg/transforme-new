@@ -1,0 +1,41 @@
+---
+import { faq } from '../../dados/faq';
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((p) => ({
+    '@type': 'Question',
+    name: p.pergunta,
+    acceptedAnswer: { '@type': 'Answer', text: p.resposta },
+  })),
+};
+---
+
+<section id="faq" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto max-w-3xl px-6 py-12 md:py-24">
+    <h2 data-revela class="text-[clamp(2rem,4vw,3.25rem)]">Dúvidas comuns sobre a transforme.tech</h2>
+    <p data-revela class="mt-4 text-[var(--texto-suave)]">
+      Entenda como nossa tecnologia ajuda sua organização a crescer com mais clareza, segurança e
+      impacto social.
+    </p>
+    <div data-revela class="mt-8 md:mt-12 divide-y divide-[var(--borda)] border-y border-[var(--borda)]">
+      {faq.map((p) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-lg text-[var(--texto-forte)]">
+            {p.pergunta}
+            <span aria-hidden="true" class="text-[var(--acento)] transition group-open:rotate-45">+</span>
+          </summary>
+          <p class="mt-4 text-[var(--texto-suave)]">{p.resposta}</p>
+        </details>
+      ))}
+    </div>
+
+    <p data-revela class="mt-8 text-center text-[var(--texto-suave)]">
+      Ainda tem dúvidas?
+      <a href="#contato" data-link class="font-semibold text-[var(--acento)]">Fale com o nosso time!</a>
+    </p>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />

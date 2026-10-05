@@ -1,0 +1,37 @@
+---
+// Os quatro números do negócio. Eles já foram os do §10 do roteiro, voltaram aos
+// do site antigo na manhã de 09/09/2026 e à tarde do mesmo dia o dono fechou
+// nesta lista, que junta os do §10 com um quarto — os atendimentos registrados.
+// Números são afirmação factual sobre o negócio: só mudam a pedido dele.
+//
+// O bloco "10 anos ajudando quem transforma realidades." fechava a seção — o
+// dono o tirou em 09/09/2026, junto com o parágrafo da década. O argumento dos
+// dez anos passou para o título do hero.
+//
+// <dl> em vez de <div>: cada número é o valor de um rótulo, e é assim que um
+// leitor de tela consegue ler o par junto.
+const numeros = [
+  { valor: '+200', rotulo: 'organizações ativas' },
+  { valor: '+ de R$ 50 milhões', rotulo: 'em doações por ano' },
+  { valor: '+109%', rotulo: 'de crescimento anual em doações recorrentes' },
+  { valor: '+ 2 milhões', rotulo: 'de atendimentos registrados' },
+];
+---
+
+<section id="numeros" class="border-t border-[var(--borda)] bg-[var(--superficie)]">
+  <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <dl data-revela-grupo class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      {numeros.map((n) => (
+        <div class="border-t border-[var(--borda)] pt-6">
+          <dt class="sr-only">{n.rotulo}</dt>
+          <dd class="m-0">
+            <b class="block font-[family-name:var(--font-display)] text-[clamp(2rem,3.6vw,3rem)] font-normal leading-tight text-[var(--texto-forte)]">
+              {n.valor}
+            </b>
+            <span class="mt-2 block text-[var(--texto-suave)]">{n.rotulo}</span>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+{
+  "name": "transforme-tech",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "og": "tsx scripts/gerar-og.ts",
+    "cf:dev": "wrangler pages dev dist --d1 DB=transforme-leads",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "verificar": "npm run test && npm run build && npm run test:e2e"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.2",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
+    "@types/turndown": "^5.0.6",
+    "jsdom": "^30.0.1",
+    "ttf2woff2": "^8.0.1",
+    "turndown": "^7.2.4",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.124.0",
+    "yaml": "^2.9.0"
+  }
+}

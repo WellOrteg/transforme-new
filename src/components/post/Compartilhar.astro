@@ -1,0 +1,41 @@
+---
+import IconeRede from '../layout/IconeRede.astro';
+
+interface Props {
+  url: string;
+  titulo: string;
+}
+const { url, titulo } = Astro.props;
+const codificado = encodeURIComponent(url);
+const texto = encodeURIComponent(titulo);
+
+// Cada destino aparece pelo símbolo da rede — antes era a inicial do nome
+// ("W", "L", "F"), que só se entende depois de ler as três juntas. O rótulo
+// inteiro continua no `sr-only`, que é o nome acessível do link.
+const destinos = [
+  { id: 'whatsapp', rotulo: 'Compartilhar no WhatsApp', href: `https://wa.me/?text=${texto}%20${codificado}` },
+  { id: 'linkedin', rotulo: 'Compartilhar no LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${codificado}` },
+  { id: 'facebook', rotulo: 'Compartilhar no Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${codificado}` },
+];
+---
+
+<nav aria-label="Compartilhar">
+  <h2 class="mb-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--texto-forte)]">
+    Compartilhar
+  </h2>
+  <ul class="flex gap-2">
+    {destinos.map((d) => (
+      <li>
+        <a
+          href={d.href}
+          rel="noopener"
+          target="_blank"
+          class="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--borda)] text-[var(--texto-forte)]"
+        >
+          <span class="sr-only">{d.rotulo}</span>
+          <IconeRede id={d.id} class="h-4 w-4" />
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

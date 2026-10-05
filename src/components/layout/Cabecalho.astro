@@ -1,0 +1,67 @@
+---
+import Logo from '../marca/Logo.astro';
+import MenuMobile from './MenuMobile.astro';
+import IconeRede from './IconeRede.astro';
+import { linkWhatsApp } from '../../dados/contato';
+
+// O §1 do roteiro: menu curto e um CTA à direita. O objetivo do cabeçalho não é
+// navegar pelo site inteiro — é achar o que se procura ou começar a conversa.
+//
+// O roteiro lista "Sobre nós", que não existe como página. O wireframe da p. 13
+// do mesmo documento usa "Conteúdos", que é o blog e existe.
+//
+// "Dúvidas comuns" entrou em 10/09/2026 a pedido do dono. A ordem dos itens é a
+// ordem das seções na página, então ele fica entre "Clientes" e "Conteúdos" —
+// quem procura preço ou prazo no menu encontra o FAQ onde a leitura o
+// encontraria.
+//
+// Com seis itens a barra passou a estourar em 768px e a quebrar em duas linhas
+// em 1024px. `md` e `lg` são ambos estreitos demais para este menu. Abaixo do
+// corte aparece o botão de menu, que tem os mesmos seis links e o mesmo CTA.
+//
+// O logo trocou para o vetor oficial do cliente em 17/09/2026, com o selo dos
+// 10 anos de volta (Logo.astro). Isso engordou o logo de 168px para 236.75px,
+// então o corte subiu de 1100px para 1145px — medido de novo com o Playwright
+// (largura real da barra em 1139px, não contada à mão), não chutado. Se o logo
+// ou um rótulo mudarem de tamanho de novo, medir de novo do mesmo jeito.
+const links = [
+  { href: '/#solucoes', rotulo: 'Soluções' },
+  { href: '/#para-quem', rotulo: 'Para quem' },
+  { href: '/#como-funciona', rotulo: 'Como funciona' },
+  { href: '/#depoimentos', rotulo: 'Clientes' },
+  { href: '/#faq', rotulo: 'Dúvidas comuns' },
+  { href: '/blog/', rotulo: 'Conteúdos' },
+];
+
+const zap = linkWhatsApp();
+---
+
+<header data-tema="escuro" class="relative z-30 bg-[var(--superficie)]">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
+    <Logo class="text-[var(--texto-forte)]" />
+
+    <nav aria-label="Principal" class="hidden min-[1145px]:block">
+      <ul class="flex gap-6 text-sm">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} data-link class="whitespace-nowrap text-[var(--texto-suave)] transition hover:text-[var(--texto-forte)]">
+              {l.rotulo}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a
+      href={zap}
+      data-acao
+      class="hidden items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-[var(--acento-texto)] min-[1145px]:inline-flex"
+      style="background: var(--acento-superficie)"
+    >
+      <IconeRede id="whatsapp" class="h-[18px] w-[18px] shrink-0" />
+      Falar com um especialista
+    </a>
+
+    <MenuMobile links={links} zap={zap} />
+  </div>
+</header>

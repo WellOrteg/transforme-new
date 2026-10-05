@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets';
+import VideoApresentacao from './VideoApresentacao.astro';
+import foto from '../../assets/site/foto-equipe-mesa.png';
+
+// O §4 do roteiro. É a seção que troca a pergunta do visitante de "o que isso
+// faz?" para "eles entendem meu problema?" — por isso ela nomeia a rotina antes
+// de dizer o nome da empresa.
+//
+// Em 09/09/2026 o dono trocou o título afirmativo ("Sua organização cresceu.
+// Sua gestão precisa acompanhar.") por uma pergunta, e pediu as cinco dores
+// "logo abaixo, em destaque". Elas dizem em pergunta o que o parágrafo de
+// abertura dizia em prosa, então o parágrafo saiu: quem lê os dois seguidos lê
+// a mesma lista duas vezes.
+//
+// A foto abre a coluna da esquerda; o texto vem antes no HTML para quem lê em
+// uma coluna só começar pelo assunto.
+//
+// O vídeo institucional voltou para cá em 09/09/2026, ao lado do parágrafo que
+// responde as cinco perguntas: a seção que era a casa dele saiu da home, e este
+// é o ponto em que a página termina de nomear o problema e passa a falar da
+// solução — que é o assunto do vídeo.
+const dores = [
+  'Uma infinidade de planilhas espalhadas?',
+  'Vários sistemas separados e não integrados?',
+  'Processos manuais e trabalhosos em sua gestão financeira?',
+  'Perde doadores mês a mês pela falta de comunicação com eles?',
+  'Não conseguem saber o impacto socioambiental gerado pelo trabalho que realizam?',
+];
+---
+
+<section id="dor" class="bg-[var(--superficie)]">
+  <div class="mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <div class="grid gap-10 md:gap-12 md:grid-cols-2 md:items-center">
+      <div class="md:order-2">
+        <h2 data-revela class="text-[clamp(2rem,4vw,3.25rem)]">
+          Sua organização passa por isso?
+        </h2>
+
+        <ul data-revela-grupo class="mt-8 grid gap-4">
+          {dores.map((d) => (
+            <li class="border-l-2 border-[var(--acento)] pl-5 text-lg font-semibold text-[var(--texto-forte)]">
+              {d}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <Image
+        src={foto}
+        data-revela
+        alt="Equipe de uma organização reunida ao redor de uma mesa, trabalhando em notebooks"
+        width={560}
+        height={326}
+        loading="lazy"
+        class="h-auto w-full md:order-1"
+      />
+    </div>
+
+    <div class="mt-10 grid gap-10 md:mt-14 md:grid-cols-2 md:items-center md:gap-12">
+      <p data-revela class="text-lg text-[var(--texto-suave)]">
+        A transforme.tech reúne em um único ecossistema as ferramentas necessárias para sua
+        organização captar recursos online, administrar suas finanças, cuidar dos relacionamentos
+        e demonstrar seu impacto.
+      </p>
+
+      <div data-revela>
+        <VideoApresentacao />
+      </div>
+    </div>
+  </div>
+</section>

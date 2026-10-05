@@ -1,0 +1,52 @@
+---
+// O painel de verdade, num notebook e num celular — a gravação que veio do
+// cliente, preparada por scripts/_mockup-plataforma.py: fundo branco recortado e
+// trocado pelo navy desta faixa, 36 MB viraram 600 KB.
+//
+// No hero ele aparece de cara, então `preload="none"` e o play só depois do
+// `load`: a primeira pintura é o pôster (18 KB) e os 600 KB de vídeo não
+// disputam banda com fonte e folha de estilo. Quem pediu menos movimento fica na
+// capa e não baixa o vídeo — ela já mostra o produto.
+//
+// Sem legenda e sem faixa de áudio, é ilustração: o texto ao lado é que conta o
+// que a plataforma faz, então o vídeo sai da árvore de acessibilidade.
+---
+
+<div data-mockup class="overflow-clip">
+  <video
+    src="/video/mockup-plataforma.mp4"
+    poster="/video/mockup-plataforma-capa.webp"
+    width="1100"
+    height="578"
+    muted
+    loop
+    playsinline
+    preload="none"
+    aria-hidden="true"
+    class="h-auto w-full"
+  ></video>
+</div>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-mockup] video');
+  const parado = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function acompanhar() {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          // O catch cobre o navegador que recusa tocar sem gesto: fica na capa.
+          if (entrada.isIntersecting) video!.play().catch(() => {});
+          else video!.pause();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    observador.observe(video!);
+  }
+
+  if (video && !parado && 'IntersectionObserver' in window) {
+    if (document.readyState === 'complete') acompanhar();
+    else addEventListener('load', acompanhar, { once: true });
+  }
+</script>
