@@ -7,6 +7,8 @@ import Sumario from '../components/post/Sumario.astro';
 import BarraProgresso from '../components/post/BarraProgresso.astro';
 import Compartilhar from '../components/post/Compartilhar.astro';
 import { tempoLeitura } from '../lib/tempoLeitura';
+import { getCollection } from 'astro:content';
+import { SITE, organizacao, serializarJsonLd } from '../lib/seo';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -19,20 +21,41 @@ const { titulo, resumo, data, autor, categoria, capa, capaAlt } = post.data;
 const url = new URL(`/blog/${post.id}/`, Astro.site).href;
 const minutos = tempoLeitura(corpo);
 const dataLonga = data.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+const relacionados = (await getCollection('blog', ({ data }) => !data.rascunho))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => Number(b.data.categoria === categoria) - Number(a.data.categoria === categoria) || b.data.data.valueOf() - a.data.data.valueOf())
+  .slice(0, 3);
 
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
+  '@id': `${url}#artigo`,
   headline: titulo,
   description: resumo,
   datePublished: data.toISOString(),
-  author: { '@type': 'Person', name: autor },
-  publisher: { '@type': 'Organization', name: 'transforme.tech' },
+  author: autor === 'transforme' ? { '@id': organizacao['@id'], '@type': 'Organization', name: 'transforme.tech', url: SITE } : { '@type': 'Person', name: autor },
+  publisher: { '@id': organizacao['@id'] },
+  inLanguage: 'pt-BR',
+  articleSection: categoria,
+  ...(capa ? { image: new URL(capa.src, Astro.site).href } : {}),
   mainEntityOfPage: url,
 };
 ---
 
-<Base titulo={`${titulo} — transforme.tech`} descricao={resumo} tipo="article">
+<Base titulo={`${titulo} — transforme.tech`} descricao={resumo} tipo="article" imagemOg={capa?.src}>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={data.toISOString()} />
+    <meta property="article:author" content={autor === 'transforme' ? 'transforme.tech' : autor} />
+    <script type="application/ld+json" set:html={serializarJsonLd(jsonld)} is:inline />
+    <script type="application/ld+json" set:html={serializarJsonLd({
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog/` },
+        { '@type': 'ListItem', position: 3, name: titulo, item: url },
+      ],
+    })} is:inline />
+  </Fragment>
   <BarraProgresso />
 
   <header data-tema="escuro" class="relative overflow-clip bg-[var(--superficie)] px-6 pb-16 pt-8 md:pb-24 md:pt-12">
@@ -42,6 +65,9 @@ const jsonld = {
       aria-hidden="true"
     ></div>
     <div class="relative mx-auto max-w-2xl">
+      <nav aria-label="Caminho da página" class="mb-6 text-sm text-[var(--texto-suave)]">
+        <a href="/">Início</a> / <a href="/blog/">Blog</a>
+      </nav>
       <p class="mb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[var(--acento)]">
         {categoria}
       </p>
@@ -72,9 +98,16 @@ const jsonld = {
 
     <article class="prose">
       <slot />
+      <aside class="mt-10 border-t border-[var(--borda)] pt-6" aria-label="Conheça a plataforma">
+        <h2>Da informação à gestão da sua organização</h2>
+        <p>Conheça o <a href="/sistema-gestao-ongs/">sistema de gestão para ONGs</a> e as soluções de
+          <a href="/doacoes-online/">doações online e recorrentes</a> da transforme.tech.</p>
+      </aside>
+      <nav aria-label="Artigos relacionados" class="mt-8">
+        <h2>Continue a leitura</h2>
+        <ul>{relacionados.map((p) => <li><a href={`/blog/${p.id}/`}>{p.data.titulo}</a></li>)}</ul>
+      </nav>
       <div class="mt-8 md:mt-12 md:hidden"><Compartilhar url={url} titulo={titulo} /></div>
     </article>
   </div>
 </Base>
-
-<script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />

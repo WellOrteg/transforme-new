@@ -12,3 +12,6 @@
 /dashboard-de-captacao-de-recursos/  /blog/dashboard-de-captacao-de-recursos/  301
 /bem-vindo-ao-blog-da-transforme-tech/  /blog/bem-vindo-ao-blog-da-transforme-tech/  301
 /transmissoes-ao-vivo-lives-e-a-arrecadacao-de-recursos/  /blog/transmissoes-ao-vivo-lives-e-a-arrecadacao-de-recursos/  301
+
+/guia_definitivo_doacoes_online/  /ebook/  301
+https://www.transforme.tech/*  https://transforme.tech/:splat  301

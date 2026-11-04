@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import { paginasSolucoes } from '../dados/paginas-solucoes';
+import { linkWhatsApp } from '../dados/contato';
+import { SITE, organizacao, serializarJsonLd } from '../lib/seo';
+
+export function getStaticPaths() {
+  return paginasSolucoes.map((pagina) => ({ params: { solucao: pagina.slug }, props: { pagina } }));
+}
+const { pagina } = Astro.props;
+const url = `${SITE}/${pagina.slug}/`;
+const dados = {
+  '@context': 'https://schema.org',
+  '@graph': [{
+    '@type': 'Service', '@id': `${url}#solucao`, name: pagina.titulo,
+    description: pagina.resumo, url, provider: { '@id': organizacao['@id'] },
+  }, {
+    '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: pagina.titulo, item: url },
+    ],
+  }, {
+    '@type': 'FAQPage', mainEntity: pagina.perguntas.map((p) => ({
+      '@type': 'Question', name: p.pergunta, acceptedAnswer: { '@type': 'Answer', text: p.resposta },
+    })),
+  }],
+};
+---
+<Base titulo={`${pagina.titulo} | transforme.tech`} descricao={pagina.descricao}>
+  <script slot="head" type="application/ld+json" set:html={serializarJsonLd(dados)} is:inline />
+  <header data-tema="escuro" class="bg-[var(--superficie)] px-6 py-14 text-[var(--texto-forte)]">
+    <div class="mx-auto max-w-4xl">
+      <nav aria-label="Caminho da página" class="mb-6 text-sm"><a href="/">Início</a> / Soluções</nav>
+      <h1 class="max-w-3xl text-[clamp(2rem,4vw,3.25rem)]">{pagina.titulo}</h1>
+      <p class="mt-6 max-w-3xl text-lg text-[var(--texto-suave)]">{pagina.resumo}</p>
+      <a href={linkWhatsApp()} style="background: var(--acento-superficie)" class="mt-8 inline-block rounded-full px-6 py-3 font-semibold text-[var(--acento-texto)]">Falar com um especialista</a>
+    </div>
+  </header>
+  <div class="mx-auto max-w-4xl px-6 py-12">
+    <article class="prose">
+      {pagina.secoes.map((secao) => <section>
+        <h2>{secao.titulo}</h2><p>{secao.texto}</p>
+        {secao.itens.length > 0 && <ul>{secao.itens.map((item) => <li>{item}</li>)}</ul>}
+      </section>)}
+      <p>Veja o <a href="/recursos-plataforma/">catálogo completo de recursos da plataforma</a> para consultar os módulos e adicionais.</p>
+      <h2>Perguntas frequentes</h2>
+      {pagina.perguntas.map((p) => <section><h3 class="mb-3 mt-8 text-xl text-[var(--texto-forte)]">{p.pergunta}</h3><p>{p.resposta}</p></section>)}
+      <h2>Aprofunde seu planejamento</h2>
+      <p><a href={`/blog/${pagina.artigo}/`}>{pagina.rotuloArtigo}</a></p>
+      <p><a href="/ebook/">Baixe o guia gratuito de doações online</a> para apoiar o planejamento da captação.</p>
+      <nav aria-label="Outras soluções"><h2>Conheça outras soluções</h2>
+        <ul>{paginasSolucoes.filter((p) => p.slug !== pagina.slug).map((p) => <li><a href={`/${p.slug}/`}>{p.titulo}</a></li>)}
+          <li><a href="/mais_eventos/">Inscrições online e gestão de eventos</a></li></ul>
+      </nav>
+    </article>
+  </div>
+</Base>

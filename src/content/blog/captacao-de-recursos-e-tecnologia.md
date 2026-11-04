@@ -47,7 +47,7 @@ Só no Brasil, mais de 180 milhões de pessoas usam diariamente a internet em su
 
 Falando de redes sociais, de acordo com o relatório Global Digital Statshot de abril de 2024, 62,3% da população mundial utiliza redes sociais ativamente, somando mais de 5 bilhões de usuários (muito mais que a soma das populações da China, Índia e Estados Unidos).
 
-Pensando em orientar as organizações do terceiro setor que desejam criar campanhas para captação de recursos bem sucedidas a partir do zero, aproveitando o potencial da internet e redes sociais, a transforme.tech elaborou um guia completo e você pode [acessar aqui.](https://transforme.tech/guia-definitivo-para-campanhas-de-doacoes-online/)
+Pensando em orientar as organizações do terceiro setor que desejam criar campanhas para captação de recursos bem sucedidas a partir do zero, aproveitando o potencial da internet e redes sociais, a transforme.tech elaborou um guia completo e você pode [acessar aqui.](/blog/guia-definitivo-para-campanhas-de-doacoes-online/)
 
 ## Ferramentas e conhecimento: o caminho para o sucesso na captação de recursos
 

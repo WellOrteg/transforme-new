@@ -11,6 +11,7 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+artifacts/
 
 # Cache da máscara do mockup: scripts/_mockup-plataforma.py refaz em um minuto.
 scripts/.tmp-mockup/

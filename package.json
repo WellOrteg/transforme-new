@@ -15,7 +15,8 @@
     "cf:dev": "wrangler pages dev dist",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "verificar": "npm run test && npm run build && npm run test:e2e"
+    "seo:auditar": "node scripts/auditar-seo.mjs",
+    "verificar": "npm run test && npm run build && npm run seo:auditar && npm run test:e2e"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

@@ -5,6 +5,7 @@ export function GET({ site }: APIContext): Response {
     'User-agent: *',
     'Allow: /',
     'Disallow: /admin',
+    'Disallow: /api/',
     '',
     `Sitemap: ${new URL('sitemap-index.xml', site).href}`,
     '',

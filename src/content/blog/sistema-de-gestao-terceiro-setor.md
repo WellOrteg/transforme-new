@@ -45,7 +45,7 @@ Imagine um portal do doador, por exemplo, no qual os mantenedores tenham acesso 
 
 Além de facilitar a interação com o doador, um sistema de gestão que facilite o contato com o doador é crucial para garantir doações recorrentes.
 
-Às vezes, para facilitar as doações, as organizações divulgam uma chave Pix, sem qualquer forma de obter os dados dos doadores e, assim, perdem a oportunidade de construir relacionamento e aumentar a recorrência. Aprenda mais sobre isso em nosso [Guia de Doações Online.](https://transforme.tech/guia-definitivo-para-campanhas-de-doacoes-online/)
+Às vezes, para facilitar as doações, as organizações divulgam uma chave Pix, sem qualquer forma de obter os dados dos doadores e, assim, perdem a oportunidade de construir relacionamento e aumentar a recorrência. Aprenda mais sobre isso em nosso [Guia de Doações Online.](/blog/guia-definitivo-para-campanhas-de-doacoes-online/)
 
 ## 4. Relatórios flexíveis e personalizáveis
 

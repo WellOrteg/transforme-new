@@ -1,6 +1,10 @@
 ---
 import { areas } from '../../dados/solucoes';
 import IconeArea from './IconeArea.astro';
+const destinos: Record<string, string> = {
+  captacao: '/doacoes-online/', financeiro: '/sistema-gestao-ongs/',
+  crm: '/recursos-plataforma/#relacionamento-doador', impacto: '/recursos-plataforma/#atendimento-social', eventos: '/mais_eventos/',
+};
 
 // O §6 do roteiro. Substitui os 12 blocos de benefício do site anterior: as
 // mesmas capacidades, reagrupadas em cinco áreas, cada uma fechando com o
@@ -21,6 +25,7 @@ import IconeArea from './IconeArea.astro';
         <article data-cartao class="flex flex-col rounded-2xl border border-[var(--borda)] p-7">
           <IconeArea id={a.id} class="h-9 w-9 text-[var(--acento)]" />
           <h3 class="mt-5 text-xl leading-snug">{a.titulo}</h3>
+          <a href={destinos[a.id]} class="mt-3 text-sm text-[var(--acento)] underline">Conheça {a.titulo.toLocaleLowerCase('pt-BR')}</a>
 
           <ul class="mt-4 grow space-y-1.5 text-sm text-[var(--texto-suave)]">
             {a.itens.map((item) => (

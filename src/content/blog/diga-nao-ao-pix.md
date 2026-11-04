@@ -33,7 +33,7 @@ A lógica é simples: ao receber feedback sobre o destino da doação, o doador 
 
 Porém, obter os dados não basta, é preciso geri-los de forma funcional respeitando as diretrizes da Lei Geral de Proteção de Dados (LGPD). Atualmente, a maioria das organizações faz isso por meio de planilhas, mas isso é ineficiente. Há formas melhores.
 
-E antes de divulgar uma campanha para doações online, registrar e gerir os dados dos doadores de forma responsável, é preciso saber estruturar sua campanha para garantir o sucesso e aumentar as recorrências. Nós preparamos um [Guia Completo](https://transforme.tech/guia-definitivo-para-campanhas-de-doacoes-online/) para isso.
+E antes de divulgar uma campanha para doações online, registrar e gerir os dados dos doadores de forma responsável, é preciso saber estruturar sua campanha para garantir o sucesso e aumentar as recorrências. Nós preparamos um [Guia Completo](/blog/guia-definitivo-para-campanhas-de-doacoes-online/) para isso.
 
 ## A ferramenta que dispensa a necessidade de dizer “não” ao Pix
 

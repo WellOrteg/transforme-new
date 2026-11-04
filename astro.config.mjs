@@ -6,7 +6,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://transforme.tech',
   output: 'static',
-  integrations: [sitemap({ filter: (p) => !p.includes('/admin') })],
+  trailingSlash: 'always',
+  integrations: [sitemap({ filter: (p) => !['/admin', '/404', '/ebook_doacoes_online'].some((rota) => new URL(p).pathname.startsWith(rota)) })],
   vite: {
     plugins: [tailwindcss()],
     // Convenção usada pela migração do WordPress (Task 9) para referenciar

@@ -9,7 +9,7 @@ rascunho: false
 
 _A plataforma transforme.tech foi atualizada para a versão 12 e com ela chegou uma grande novidade, o Mural Online, e nesse texto você saberá mais._
 
-Assim como o novo [Dashboard de Doações Online](https://transforme.tech/dashboard-de-captacao-de-recursos/), a versão 12 da plataforma transforme.tech trouxe outras novidades. Um novo recurso é o Mural Online, uma ferramenta para ajudar na divulgação de informações da sua organização.
+Assim como o novo [Dashboard de Doações Online](/blog/dashboard-de-captacao-de-recursos/), a versão 12 da plataforma transforme.tech trouxe outras novidades. Um novo recurso é o Mural Online, uma ferramenta para ajudar na divulgação de informações da sua organização.
 
 O Mural Online é uma página online na qual sua organização pode divulgar informações e contatos na forma de pequenos “post-its”. Essa ferramenta é utilizada na forma de hotsite, tal como os hotsites para doações online, sendo acessível, portanto, por meio de um link.
 

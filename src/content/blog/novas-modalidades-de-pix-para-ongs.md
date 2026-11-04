@@ -11,7 +11,7 @@ _Recentemente o Banco Central lançou novas modalidades de pagamento via Pix e a
 
 O Pix é o instrumento de pagamento mais popular do Brasil. Segundo informações do Banco Central, em 2024 foi o meio que mais cresceu e respondeu a quase metade do total de transações realizadas. Inclusive, se popularizou muito as doações pix para ONGs.
 
-Porém, há um ponto de atenção. As doações via Pix facilitam a captação de recursos nas organizações, contudo, a mera divulgação de uma chave Pix não é a forma ideal para receber doações. Quer saber mais? Temos [um artigo falando sobre este tema.](https://transforme.tech/diga-nao-ao-pix/)
+Porém, há um ponto de atenção. As doações via Pix facilitam a captação de recursos nas organizações, contudo, a mera divulgação de uma chave Pix não é a forma ideal para receber doações. Quer saber mais? Temos [um artigo falando sobre este tema.](/blog/diga-nao-ao-pix/)
 
 A transforme.tech já era conhecida por oferecer as soluções mais completas para doações online. Recentemente, o Banco Central lançou novas formas de pagamento via Pix e a transforme.tech já foi pioneira e implementou as novidades nas doações Pix para ONGs.
 
@@ -19,7 +19,7 @@ A transforme.tech já era conhecida por oferecer as soluções mais completas pa
 
 Se você ainda não conhece as soluções para doações online da transforme.tech, antes de falar das novidades vale a pena entender rapidamente como sua organização pode alavancar a captação de recursos com a gente.
 
-[![Banner do Guia Definitivo de Doações Online da transforme.tech](~/assets/blog/guia_de_doacoes_online_transforme-tech-300x157.png)](https://transforme.tech/guia_definitivo_doacoes_online/)
+[![Banner do Guia Definitivo de Doações Online da transforme.tech](~/assets/blog/guia_de_doacoes_online_transforme-tech-300x157.png)](/ebook/)
 
 Na plataforma transforme.social (a plataforma da transforme.tech), é possível criar páginas ilimitadas para receber doações online, inclusive em recorrência. Também é possível fazer a gestão dos valores e manter o relacionamento com os doadores.
 

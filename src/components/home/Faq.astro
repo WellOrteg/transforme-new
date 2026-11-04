@@ -1,5 +1,6 @@
 ---
 import { faq } from '../../dados/faq';
+import { serializarJsonLd } from '../../lib/seo';
 
 const jsonld = {
   '@context': 'https://schema.org',
@@ -38,4 +39,4 @@ const jsonld = {
   </div>
 </section>
 
-<script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+<script type="application/ld+json" set:html={serializarJsonLd(jsonld)} is:inline />

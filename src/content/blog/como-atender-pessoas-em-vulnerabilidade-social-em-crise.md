@@ -32,7 +32,7 @@ Há diversas ferramentas disponíveis para ajudar nessas ações. A transforme.t
 5.  Monitore os atendidos em vulnerabilidade e identifique se, dentro do ciclo definido, a pessoa ou família continuam precisando de apoio;
 6.  Ao final do ciclo definido, busque indicadores sociais e resultados relacionados aos atendimentos realizados.
 
-No caso das campanhas para doações online é possível criar estratégias muito bem elaboradas, com grande potencial de alcance e resultados mais rápidos. Para isso, criamos um guia para auxiliar sua organização e você pode acessar [clicando aqui.](https://transforme.tech/guia-definitivo-para-campanhas-de-doacoes-online/)
+No caso das campanhas para doações online é possível criar estratégias muito bem elaboradas, com grande potencial de alcance e resultados mais rápidos. Para isso, criamos um guia para auxiliar sua organização e você pode acessar [clicando aqui.](/blog/guia-definitivo-para-campanhas-de-doacoes-online/)
 
 ## O que as pessoas em vulnerabilidade social viveram durante a crise gerada pela pandemia
 

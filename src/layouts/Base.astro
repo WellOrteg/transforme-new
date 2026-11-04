@@ -3,15 +3,29 @@ import '../styles/tokens.css';
 import Cabecalho from '../components/layout/Cabecalho.astro';
 import Rodape from '../components/layout/Rodape.astro';
 import BotaoWhatsApp from '../components/layout/BotaoWhatsApp.astro';
+import { SITE, organizacao, serializarJsonLd, urlCanonica } from '../lib/seo';
 
 interface Props {
   titulo: string;
   descricao: string;
   imagemOg?: string;
   tipo?: 'website' | 'article';
+  caminhoCanonico?: string;
+  naoIndexar?: boolean;
 }
-const { titulo, descricao, imagemOg = '/og-padrao.png', tipo = 'website' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const { titulo, descricao, imagemOg = '/og-padrao.png', tipo = 'website', caminhoCanonico, naoIndexar = false } = Astro.props;
+const canonical = urlCanonica(caminhoCanonico ?? Astro.url.pathname);
+const dadosSite = {
+  '@context': 'https://schema.org',
+  '@graph': [organizacao, {
+    '@type': 'WebSite', '@id': `${SITE}/#site`, url: `${SITE}/`,
+    name: 'transforme.tech', inLanguage: 'pt-BR', publisher: { '@id': organizacao['@id'] },
+  }, {
+    '@type': 'WebPage', '@id': `${canonical}#pagina`, url: canonical,
+    name: titulo, description: descricao, inLanguage: 'pt-BR',
+    isPartOf: { '@id': `${SITE}/#site` }, about: { '@id': organizacao['@id'] },
+  }],
+};
 ---
 
 <!doctype html>
@@ -56,19 +70,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       fbq('init', '615518767986341');
       fbq('track', 'PageView');
     </script>
-    <noscript
-      ><img
-        height="1"
-        width="1"
-        style="display:none"
-        src="https://www.facebook.com/tr?id=615518767986341&ev=PageView&noscript=1"
-      /></noscript
-    >
     <!-- End Meta Pixel Code -->
 
     <title>{titulo}</title>
     <meta name="description" content={descricao} />
+    <meta name="robots" content={naoIndexar ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Blog da transforme.tech" href="/rss.xml" />
+    <script type="application/ld+json" set:html={serializarJsonLd(dadosSite)} is:inline />
+    <slot name="head" />
 
     <link rel="preload" href="/fonts/NeueMachina-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
@@ -79,12 +89,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(imagemOg, Astro.site).href} />
     <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="transforme.tech" />
+    <meta property="og:image:alt" content={titulo} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo} />
+    <meta name="twitter:description" content={descricao} />
+    <meta name="twitter:image" content={new URL(imagemOg, Astro.site).href} />
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display:none"
+        alt=""
+        src="https://www.facebook.com/tr?id=615518767986341&ev=PageView&noscript=1"
+      /></noscript
+    >
+
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
